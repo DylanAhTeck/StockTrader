@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,8 @@
 		C9AF440025711B9400D561FD /* Stock_TraderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43FF25711B9400D561FD /* Stock_TraderTests.swift */; };
 		C9AF440B25711B9400D561FD /* Stock_TraderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF440A25711B9400D561FD /* Stock_TraderUITests.swift */; };
 		C9AF441C2571291500D561FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AF441B2571291400D561FD /* Assets.xcassets */; };
+		C9AF44302572265900D561FD /* ViewControllerResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF442F2572265900D561FD /* ViewControllerResolver.swift */; };
+		C9AF443525722B7500D561FD /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF443425722B7500D561FD /* SearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		C9AF440A25711B9400D561FD /* Stock_TraderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock_TraderUITests.swift; sourceTree = "<group>"; };
 		C9AF440C25711B9400D561FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9AF441B2571291400D561FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Downloads/Assets.xcassets; sourceTree = "<group>"; };
+		C9AF442F2572265900D561FD /* ViewControllerResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerResolver.swift; sourceTree = "<group>"; };
+		C9AF443425722B7500D561FD /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		E04E20338E0641DC17D67456 /* Pods_Stock_Trader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_Trader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6A0050B7B62E1861A612452 /* Pods-Stock Trader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader.release.xcconfig"; path = "Target Support Files/Pods-Stock Trader/Pods-Stock Trader.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,7 +105,6 @@
 				5EF4D07C9C76DF67106B29D3 /* Pods-Stock TraderTests.debug.xcconfig */,
 				C90B19905C3B7F671E5BD926 /* Pods-Stock TraderTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -143,6 +146,8 @@
 				C9AF43E825711B8700D561FD /* AppDelegate.swift */,
 				C9AF43EA25711B8700D561FD /* SceneDelegate.swift */,
 				C9AF43EC25711B8700D561FD /* ContentView.swift */,
+				C9AF443425722B7500D561FD /* SearchBar.swift */,
+				C9AF442F2572265900D561FD /* ViewControllerResolver.swift */,
 				C9AF441B2571291400D561FD /* Assets.xcassets */,
 				C9AF43F325711B9300D561FD /* LaunchScreen.storyboard */,
 				C9AF43F625711B9300D561FD /* Info.plist */,
@@ -415,7 +420,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9AF44302572265900D561FD /* ViewControllerResolver.swift in Sources */,
 				C9AF43E925711B8700D561FD /* AppDelegate.swift in Sources */,
+				C9AF443525722B7500D561FD /* SearchBar.swift in Sources */,
 				C9AF43EB25711B8700D561FD /* SceneDelegate.swift in Sources */,
 				C9AF43ED25711B8700D561FD /* ContentView.swift in Sources */,
 			);

@@ -10,17 +10,33 @@ import SwiftUI
 struct ContentView: View {
     let title = "Stocks"
     var stocks = ["AAPL","MSFT","GOOG","W","SNAP"]
+    @State var searchText: String = ""
+
+    @ObservedObject var searchBar: SearchBar = SearchBar()
+    
     var body: some View {
         NavigationView {
-            List(stocks, id: \.self){
-            item in
-                
-            VStack(alignment: .leading){
-                Text(item).bold()
-                Text("10.0 shares").font(.subheadline).foregroundColor(.secondary)
+            //List(stocks, id: \.self){
+            List{
+                ForEach(stocks.filter {
+                            searchBar.searchText.isEmpty ||
+                                $0.localizedStandardContains(searchBar.searchText)},
+                        id: \.self){
+                    eachStock in Text(eachStock)
+                }
             }
-            }
-            .navigationTitle("Stocks")
+            .navigationBarTitle("Stocks")
+            .add(self.searchBar)
+        
+               
+//            item in
+//
+//            VStack(alignment: .leading){
+//                Text(item).bold()
+//                Text("10.0 shares").font(.subheadline).foregroundColor(.secondary)
+//            }
+//            }
+//            .navigationTitle("Stocks")
         
         }
     }
