@@ -143,11 +143,10 @@
 		C9AF43E725711B8700D561FD /* Stock Trader */ = {
 			isa = PBXGroup;
 			children = (
+				C9AF4439257230AB00D561FD /* Search Bar */,
 				C9AF43E825711B8700D561FD /* AppDelegate.swift */,
 				C9AF43EA25711B8700D561FD /* SceneDelegate.swift */,
 				C9AF43EC25711B8700D561FD /* ContentView.swift */,
-				C9AF443425722B7500D561FD /* SearchBar.swift */,
-				C9AF442F2572265900D561FD /* ViewControllerResolver.swift */,
 				C9AF441B2571291400D561FD /* Assets.xcassets */,
 				C9AF43F325711B9300D561FD /* LaunchScreen.storyboard */,
 				C9AF43F625711B9300D561FD /* Info.plist */,
@@ -180,6 +179,15 @@
 				C9AF440C25711B9400D561FD /* Info.plist */,
 			);
 			path = "Stock TraderUITests";
+			sourceTree = "<group>";
+		};
+		C9AF4439257230AB00D561FD /* Search Bar */ = {
+			isa = PBXGroup;
+			children = (
+				C9AF443425722B7500D561FD /* SearchBar.swift */,
+				C9AF442F2572265900D561FD /* ViewControllerResolver.swift */,
+			);
+			path = "Search Bar";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
