@@ -10,6 +10,8 @@
 		465E2F23CD2EC966A42F75F9 /* Pods_Stock_Trader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E04E20338E0641DC17D67456 /* Pods_Stock_Trader.framework */; };
 		65D82E775D4A615063DD053E /* Pods_Stock_Trader_Stock_TraderUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */; };
 		C05138D95F2BB0092860E1C0 /* Pods_Stock_TraderTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426101C943215D1440DBF550 /* Pods_Stock_TraderTests.framework */; };
+		C933B5FC257272BA00E898C2 /* StockDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933B5FB257272BA00E898C2 /* StockDetail.swift */; };
+		C95CFAEF25724CBF0097A339 /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95CFAEE25724CBF0097A339 /* Stock.swift */; };
 		C9AF43E925711B8700D561FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43E825711B8700D561FD /* AppDelegate.swift */; };
 		C9AF43EB25711B8700D561FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43EA25711B8700D561FD /* SceneDelegate.swift */; };
 		C9AF43ED25711B8700D561FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43EC25711B8700D561FD /* ContentView.swift */; };
@@ -47,6 +49,8 @@
 		85735CD81502A9F555211ED3 /* Pods-Stock Trader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader.debug.xcconfig"; path = "Target Support Files/Pods-Stock Trader/Pods-Stock Trader.debug.xcconfig"; sourceTree = "<group>"; };
 		B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_Trader_Stock_TraderUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90B19905C3B7F671E5BD926 /* Pods-Stock TraderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock TraderTests.release.xcconfig"; path = "Target Support Files/Pods-Stock TraderTests/Pods-Stock TraderTests.release.xcconfig"; sourceTree = "<group>"; };
+		C933B5FB257272BA00E898C2 /* StockDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetail.swift; sourceTree = "<group>"; };
+		C95CFAEE25724CBF0097A339 /* Stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
 		C9AF43E525711B8700D561FD /* Stock Trader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stock Trader.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AF43E825711B8700D561FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9AF43EA25711B8700D561FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +122,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C95CFAF325724E4B0097A339 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C95CFAEE25724CBF0097A339 /* Stock.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C9AF43DC25711B8700D561FD = {
 			isa = PBXGroup;
 			children = (
@@ -143,10 +155,12 @@
 		C9AF43E725711B8700D561FD /* Stock Trader */ = {
 			isa = PBXGroup;
 			children = (
+				C95CFAF325724E4B0097A339 /* Models */,
 				C9AF4439257230AB00D561FD /* Search Bar */,
 				C9AF43E825711B8700D561FD /* AppDelegate.swift */,
 				C9AF43EA25711B8700D561FD /* SceneDelegate.swift */,
 				C9AF43EC25711B8700D561FD /* ContentView.swift */,
+				C933B5FB257272BA00E898C2 /* StockDetail.swift */,
 				C9AF441B2571291400D561FD /* Assets.xcassets */,
 				C9AF43F325711B9300D561FD /* LaunchScreen.storyboard */,
 				C9AF43F625711B9300D561FD /* Info.plist */,
@@ -430,6 +444,8 @@
 			files = (
 				C9AF44302572265900D561FD /* ViewControllerResolver.swift in Sources */,
 				C9AF43E925711B8700D561FD /* AppDelegate.swift in Sources */,
+				C95CFAEF25724CBF0097A339 /* Stock.swift in Sources */,
+				C933B5FC257272BA00E898C2 /* StockDetail.swift in Sources */,
 				C9AF443525722B7500D561FD /* SearchBar.swift in Sources */,
 				C9AF43EB25711B8700D561FD /* SceneDelegate.swift in Sources */,
 				C9AF43ED25711B8700D561FD /* ContentView.swift in Sources */,
