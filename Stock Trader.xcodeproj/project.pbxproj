@@ -7,14 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		465E2F23CD2EC966A42F75F9 /* Pods_Stock_Trader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E04E20338E0641DC17D67456 /* Pods_Stock_Trader.framework */; };
+		65D82E775D4A615063DD053E /* Pods_Stock_Trader_Stock_TraderUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */; };
+		C05138D95F2BB0092860E1C0 /* Pods_Stock_TraderTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426101C943215D1440DBF550 /* Pods_Stock_TraderTests.framework */; };
 		C9AF43E925711B8700D561FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43E825711B8700D561FD /* AppDelegate.swift */; };
 		C9AF43EB25711B8700D561FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43EA25711B8700D561FD /* SceneDelegate.swift */; };
 		C9AF43ED25711B8700D561FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43EC25711B8700D561FD /* ContentView.swift */; };
-		C9AF43EF25711B9300D561FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AF43EE25711B9300D561FD /* Assets.xcassets */; };
 		C9AF43F225711B9300D561FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AF43F125711B9300D561FD /* Preview Assets.xcassets */; };
 		C9AF43F525711B9300D561FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9AF43F325711B9300D561FD /* LaunchScreen.storyboard */; };
 		C9AF440025711B9400D561FD /* Stock_TraderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF43FF25711B9400D561FD /* Stock_TraderTests.swift */; };
 		C9AF440B25711B9400D561FD /* Stock_TraderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF440A25711B9400D561FD /* Stock_TraderUITests.swift */; };
+		C9AF441C2571291500D561FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AF441B2571291400D561FD /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,11 +38,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E1CAB4EFF6952DA97537604 /* Pods-Stock Trader-Stock TraderUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader-Stock TraderUITests.debug.xcconfig"; path = "Target Support Files/Pods-Stock Trader-Stock TraderUITests/Pods-Stock Trader-Stock TraderUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		426101C943215D1440DBF550 /* Pods_Stock_TraderTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_TraderTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EF4D07C9C76DF67106B29D3 /* Pods-Stock TraderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock TraderTests.debug.xcconfig"; path = "Target Support Files/Pods-Stock TraderTests/Pods-Stock TraderTests.debug.xcconfig"; sourceTree = "<group>"; };
+		69705A18646AABDE9F0091AE /* Pods-Stock Trader-Stock TraderUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader-Stock TraderUITests.release.xcconfig"; path = "Target Support Files/Pods-Stock Trader-Stock TraderUITests/Pods-Stock Trader-Stock TraderUITests.release.xcconfig"; sourceTree = "<group>"; };
+		85735CD81502A9F555211ED3 /* Pods-Stock Trader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader.debug.xcconfig"; path = "Target Support Files/Pods-Stock Trader/Pods-Stock Trader.debug.xcconfig"; sourceTree = "<group>"; };
+		B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_Trader_Stock_TraderUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C90B19905C3B7F671E5BD926 /* Pods-Stock TraderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock TraderTests.release.xcconfig"; path = "Target Support Files/Pods-Stock TraderTests/Pods-Stock TraderTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9AF43E525711B8700D561FD /* Stock Trader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stock Trader.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AF43E825711B8700D561FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9AF43EA25711B8700D561FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C9AF43EC25711B8700D561FD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C9AF43EE25711B9300D561FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9AF43F125711B9300D561FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C9AF43F425711B9300D561FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9AF43F625711B9300D561FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +58,9 @@
 		C9AF440625711B9400D561FD /* Stock TraderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stock TraderUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AF440A25711B9400D561FD /* Stock_TraderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock_TraderUITests.swift; sourceTree = "<group>"; };
 		C9AF440C25711B9400D561FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9AF441B2571291400D561FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Downloads/Assets.xcassets; sourceTree = "<group>"; };
+		E04E20338E0641DC17D67456 /* Pods_Stock_Trader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_Trader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6A0050B7B62E1861A612452 /* Pods-Stock Trader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader.release.xcconfig"; path = "Target Support Files/Pods-Stock Trader/Pods-Stock Trader.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				465E2F23CD2EC966A42F75F9 /* Pods_Stock_Trader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C05138D95F2BB0092860E1C0 /* Pods_Stock_TraderTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,12 +84,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65D82E775D4A615063DD053E /* Pods_Stock_Trader_Stock_TraderUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B9C83C2022912F38574A8CF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				85735CD81502A9F555211ED3 /* Pods-Stock Trader.debug.xcconfig */,
+				F6A0050B7B62E1861A612452 /* Pods-Stock Trader.release.xcconfig */,
+				3E1CAB4EFF6952DA97537604 /* Pods-Stock Trader-Stock TraderUITests.debug.xcconfig */,
+				69705A18646AABDE9F0091AE /* Pods-Stock Trader-Stock TraderUITests.release.xcconfig */,
+				5EF4D07C9C76DF67106B29D3 /* Pods-Stock TraderTests.debug.xcconfig */,
+				C90B19905C3B7F671E5BD926 /* Pods-Stock TraderTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		44D116355B6891D753165DAE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E04E20338E0641DC17D67456 /* Pods_Stock_Trader.framework */,
+				B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */,
+				426101C943215D1440DBF550 /* Pods_Stock_TraderTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C9AF43DC25711B8700D561FD = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +122,8 @@
 				C9AF43FE25711B9400D561FD /* Stock TraderTests */,
 				C9AF440925711B9400D561FD /* Stock TraderUITests */,
 				C9AF43E625711B8700D561FD /* Products */,
+				3B9C83C2022912F38574A8CF /* Pods */,
+				44D116355B6891D753165DAE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,7 +143,7 @@
 				C9AF43E825711B8700D561FD /* AppDelegate.swift */,
 				C9AF43EA25711B8700D561FD /* SceneDelegate.swift */,
 				C9AF43EC25711B8700D561FD /* ContentView.swift */,
-				C9AF43EE25711B9300D561FD /* Assets.xcassets */,
+				C9AF441B2571291400D561FD /* Assets.xcassets */,
 				C9AF43F325711B9300D561FD /* LaunchScreen.storyboard */,
 				C9AF43F625711B9300D561FD /* Info.plist */,
 				C9AF43F025711B9300D561FD /* Preview Content */,
@@ -143,9 +184,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C9AF440F25711B9400D561FD /* Build configuration list for PBXNativeTarget "Stock Trader" */;
 			buildPhases = (
+				13A124659DA585158200318F /* [CP] Check Pods Manifest.lock */,
 				C9AF43E125711B8700D561FD /* Sources */,
 				C9AF43E225711B8700D561FD /* Frameworks */,
 				C9AF43E325711B8700D561FD /* Resources */,
+				C56C2AB93F759C496B680518 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -160,6 +203,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C9AF441225711B9400D561FD /* Build configuration list for PBXNativeTarget "Stock TraderTests" */;
 			buildPhases = (
+				34A057DE1EAAF1A8B3B1ABDA /* [CP] Check Pods Manifest.lock */,
 				C9AF43F725711B9400D561FD /* Sources */,
 				C9AF43F825711B9400D561FD /* Frameworks */,
 				C9AF43F925711B9400D561FD /* Resources */,
@@ -178,9 +222,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C9AF441525711B9400D561FD /* Build configuration list for PBXNativeTarget "Stock TraderUITests" */;
 			buildPhases = (
+				18F5371181DBE0670F2C4959 /* [CP] Check Pods Manifest.lock */,
 				C9AF440225711B9400D561FD /* Sources */,
 				C9AF440325711B9400D561FD /* Frameworks */,
 				C9AF440425711B9400D561FD /* Resources */,
+				BD282098328B5916B1D8BE60 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -241,7 +287,7 @@
 			files = (
 				C9AF43F525711B9300D561FD /* LaunchScreen.storyboard in Resources */,
 				C9AF43F225711B9300D561FD /* Preview Assets.xcassets in Resources */,
-				C9AF43EF25711B9300D561FD /* Assets.xcassets in Resources */,
+				C9AF441C2571291500D561FD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +306,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13A124659DA585158200318F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Stock Trader-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		18F5371181DBE0670F2C4959 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Stock Trader-Stock TraderUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		34A057DE1EAAF1A8B3B1ABDA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Stock TraderTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BD282098328B5916B1D8BE60 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Stock Trader-Stock TraderUITests/Pods-Stock Trader-Stock TraderUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Stock Trader-Stock TraderUITests/Pods-Stock Trader-Stock TraderUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stock Trader-Stock TraderUITests/Pods-Stock Trader-Stock TraderUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C56C2AB93F759C496B680518 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Stock Trader/Pods-Stock Trader-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Stock Trader/Pods-Stock Trader-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stock Trader/Pods-Stock Trader-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C9AF43E125711B8700D561FD /* Sources */ = {
@@ -433,6 +582,7 @@
 		};
 		C9AF441025711B9400D561FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 85735CD81502A9F555211ED3 /* Pods-Stock Trader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -454,6 +604,7 @@
 		};
 		C9AF441125711B9400D561FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F6A0050B7B62E1861A612452 /* Pods-Stock Trader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -475,6 +626,7 @@
 		};
 		C9AF441325711B9400D561FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5EF4D07C9C76DF67106B29D3 /* Pods-Stock TraderTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -497,6 +649,7 @@
 		};
 		C9AF441425711B9400D561FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C90B19905C3B7F671E5BD926 /* Pods-Stock TraderTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -519,6 +672,7 @@
 		};
 		C9AF441625711B9400D561FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E1CAB4EFF6952DA97537604 /* Pods-Stock Trader-Stock TraderUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -539,6 +693,7 @@
 		};
 		C9AF441725711B9400D561FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 69705A18646AABDE9F0091AE /* Pods-Stock Trader-Stock TraderUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
