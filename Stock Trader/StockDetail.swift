@@ -16,6 +16,8 @@ struct StockDetail: View {
         GridItem(.flexible(), alignment:.leading)
        ]
     
+    @State var moreText = false
+    
     let statKeys = ["last", "Open Price", "High", "Low", "Mid", "Volume", "Bid Price"]
     
     
@@ -73,6 +75,30 @@ struct StockDetail: View {
                         }
                     }
                 }
+            }
+            
+            //About
+            Section{
+                VStack(alignment: .leading){
+                    HStack(){
+                        Text("About").font(.title2).padding(.bottom, 5)
+                        Spacer()
+                    }
+                    HStack(){
+                        Text("Amazon is guided by four principles: customer obsession rather than competitior focus, passion for invention, commitment to customers, etc.").lineLimit(moreText ? nil : 2)
+                        Spacer()
+                    }
+                    HStack(){
+                        Spacer()
+                        Button(action: {
+                            self.moreText.toggle()
+                        }){Text(self.moreText ? "Show less" : "Show more..." ).font(.subheadline).foregroundColor(.secondary)}.padding(.trailing).padding(.top, 1)
+                    }
+                }
+            }
+            
+            //News
+            Section {
                 
             }
         }.navigationTitle(stock.ticker).padding(.leading)
