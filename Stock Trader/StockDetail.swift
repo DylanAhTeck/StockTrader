@@ -28,7 +28,7 @@ struct StockDetail: SwiftUI.View {
                 //About
                 AboutView()
                 //News
-                NewsView()
+                NewsView(stockVM: stockVM)
             }.navigationTitle(stock.ticker)//.padding(.leading)
          
         }
@@ -234,7 +234,7 @@ struct StatsView: SwiftUI.View {
                         Text("High: \(String(format: "%.2f", stockVM.stats.high))")
                         Text("Low: \(String(format: "%.2f", stockVM.stats.low))")
                         Text("Mid: \(String(format: "%.2f", stockVM.stats.mid))")
-                        Text("Volume: \(stockVM.stats.volume)")
+                        Text("Volume: \(String(format: "%.0f", stockVM.stats.volume))")
                         Text("Bid Price: \(String(format: "%.2f", stockVM.stats.bidPrice))")
                     }
                 }
@@ -269,15 +269,8 @@ struct AboutView: SwiftUI.View {
 }
 
 struct NewsView: SwiftUI.View {
-    var news = [
-        "Title": "Microsoft is extending it's remote",
-        "Img": "img_url",
-        "timestamp": "123",
-        "source": "source"
-    ]
     
-    let test = [1,2,3]
-    
+    @ObservedObject var stockVM: StockVM
     var body: some SwiftUI.View {
         Section() {
             HStack(){
@@ -285,41 +278,38 @@ struct NewsView: SwiftUI.View {
                 Spacer()
             }
             //Big News
-
-            TopNewsView()
-            Divider()
-            //List {
-            ForEach(test, id: \.self){
-                color in
-                NewsArticleView()
-//            List {
-            // }
-            //                .onAppear() {
-            //                    UITableView.appearance().backgroundColor = UIColor.clear
-            //                    UITableViewCell.appearance().backgroundColor = UIColor.clear
-            //                }
-            // .listStyle(PlainListStyle())
+            ForEach(stockVM.news.indices, id: \.self){
+                index in
+                if(index == 0){
+                    TopNewsView(newsArticle: stockVM.news[index])
+                    Divider()
+                }
+                else {
+                    NewsArticleView(newsArticle: stockVM.news[index])
+                }
+                
             }
         }
     }
 }
 
 struct TopNewsView: SwiftUI.View {
+    var newsArticle: NewsArticle
     var body: some SwiftUI.View {
         VStack
         {
-            KFImage(URL(string: "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png")!)
+            KFImage(URL(string: newsArticle.urlToImage)!)
                 .resizable()
                 .cancelOnDisappear(true)
                 .aspectRatio(contentMode: .fill)
                 .cornerRadius(15)
             HStack{
-                Text("Business insider").font(.subheadline).bold().foregroundColor(.secondary)
+                Text(newsArticle.name).font(.subheadline).bold().foregroundColor(.secondary)
                 Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
                 Spacer()
             }
             
-            Text("Microsoft is extending its remote-work policy to July 2021 'at the earliest' (MSFT)").bold()
+            Text(newsArticle.title).bold()
         }
         .padding()
         .background(Color.white)
@@ -340,22 +330,24 @@ struct TopNewsView: SwiftUI.View {
 }
 
 struct NewsArticleView: SwiftUI.View {
+    
+    var newsArticle: NewsArticle
     var body: some SwiftUI.View {
         HStack{
             VStack
             {
                 HStack{
-                    Text("Business insider").font(.subheadline).bold().foregroundColor(.secondary)
+                    Text(newsArticle.name).font(.subheadline).bold().foregroundColor(.secondary)
                     Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
                     Spacer()
                 }
                 HStack{
-                    Text("Microsoft is extending its remote work policy to July 2021 'at the earliest' (MSFT)").bold().lineLimit(3)
+                    Text(newsArticle.title).bold().lineLimit(3)
                     Spacer()
                 }
             }
             
-            KFImage(URL(string: "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png")!)
+            KFImage(URL(string: newsArticle.urlToImage)!)
                 .resizable()
                 .cancelOnDisappear(true)
                 .scaledToFill()

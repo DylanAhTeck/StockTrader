@@ -13,12 +13,15 @@ import SwiftyJSON
 class StockVM: ObservableObject {
     @Published var stock: Stock
     @Published var stats: Stats = Stats()
+    @Published var news: [NewsArticle] = []
+    
     init(stock: Stock) {
         self.stock = stock
-        self.retrieveStockInformation()
+        self.getStats()
+        self.getNews()
     }
     
-    func retrieveStockInformation(){
+    func getStats(){
         AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
@@ -28,6 +31,22 @@ class StockVM: ObservableObject {
                     if let statsArray = json.to(type: Stats.self){
                         let arr  = statsArray as! [Stats]
                         self.stats = arr[0]
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+        }
+    }
+    
+    func getNews(){
+        AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/news/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
+            .responseJSON {
+            (response) in
+                switch response.result {
+                case .success(let data):
+                    let json = JSON(data)
+                    if let newsArray = json.to(type: NewsArticle.self){
+                        self.news = newsArray as! [NewsArticle]
                     }
                 case .failure(let error):
                     print(error)
