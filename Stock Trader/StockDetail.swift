@@ -57,7 +57,14 @@ struct StockOverviewView: SwiftUI.View {
     }
 }
 
+struct DetailView: SwiftUI.View {
+    var body: some SwiftUI.View {
+        Text("Detail")
+    }
+}
 struct PortfolioView: SwiftUI.View {
+    @State var showingDetail = false
+    
     var body: some SwiftUI.View {
             VStack(alignment: .leading){
                 Text("Portfolio").font(.title2)//.padding(.bottom, 5)
@@ -68,13 +75,19 @@ struct PortfolioView: SwiftUI.View {
                         Text("Market Value: $1013.40").padding(1)
                     }
                     Spacer()
-                    Button("Trade"){}
+                    Button(action : {
+                        self.showingDetail.toggle()
+                    }
+                    ){Text("Trade")}
                         .padding()
                         .frame(minWidth: 0, maxWidth:150)
                         .background(Color.green)
                         .foregroundColor(Color.white)
                         .cornerRadius(40)
                         .padding(.trailing)
+                    .sheet(isPresented: $showingDetail){
+                        DetailView()
+                    }
                 }
             }.padding(.leading)
     }
@@ -112,7 +125,7 @@ struct StatsView: SwiftUI.View {
                     }
                 }
             }
-        }.padding(.leading)
+        }.padding(.leading).padding(.trailing)
     }
 }
 
@@ -142,8 +155,6 @@ struct AboutView: SwiftUI.View {
 }
 
 struct NewsView: SwiftUI.View {
-    
-    
     var news = [
         "Title": "Microsoft is extending it's remote",
         "Img": "img_url",
@@ -159,30 +170,100 @@ struct NewsView: SwiftUI.View {
                 Text("News").font(.title2).padding(.leading)
                 Spacer()
             }
+            //Big News
+
+            TopNewsView()
+            Divider()
             //List {
             ForEach(test, id: \.self){
                 color in
-                VStack
-                {
-                    KFImage(URL(string: "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png")!)
-                        .resizable()
-                        .cancelOnDisappear(true)
-                        .aspectRatio(contentMode: .fill)
-                        .cornerRadius(5)
-                    HStack{
-                        Text("Business insider").font(.subheadline).bold().foregroundColor(.secondary)
-                        Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
-                    }
-                    
-                    Text("Microsoft is extending its remote-work policy to July 2021 'at the earliest' (MSFT)").bold()
-                }.padding()
-            }
+                NewsArticleView()
+//            List {
             // }
             //                .onAppear() {
             //                    UITableView.appearance().backgroundColor = UIColor.clear
             //                    UITableViewCell.appearance().backgroundColor = UIColor.clear
             //                }
             // .listStyle(PlainListStyle())
+            }
         }
+    }
+}
+
+struct TopNewsView: SwiftUI.View {
+    var body: some SwiftUI.View {
+        VStack
+        {
+            KFImage(URL(string: "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png")!)
+                .resizable()
+                .cancelOnDisappear(true)
+                .aspectRatio(contentMode: .fill)
+                .cornerRadius(15)
+            HStack{
+                Text("Business insider").font(.subheadline).bold().foregroundColor(.secondary)
+                Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
+                Spacer()
+            }
+            
+            Text("Microsoft is extending its remote-work policy to July 2021 'at the earliest' (MSFT)").bold()
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15)
+        .contentShape(RoundedRectangle(cornerRadius: 15))
+        .contextMenu {
+            Button(action: {
+            }) {
+                Label("Open in Safari", systemImage: "safari")
+            }
+            
+            Button(action: {
+            }) {
+                Label("Share on Twitter", systemImage: "square.and.arrow.up")
+            }
+        }
+    }
+}
+
+struct NewsArticleView: SwiftUI.View {
+    var body: some SwiftUI.View {
+        HStack{
+            VStack
+            {
+                HStack{
+                    Text("Business insider").font(.subheadline).bold().foregroundColor(.secondary)
+                    Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
+                    Spacer()
+                }
+                HStack{
+                    Text("Microsoft is extending its remote work policy to July 2021 'at the earliest' (MSFT)").bold().lineLimit(3)
+                    Spacer()
+                }
+            }
+            
+            KFImage(URL(string: "https://homepages.cae.wisc.edu/~ece533/images/arctichare.png")!)
+                .resizable()
+                .cancelOnDisappear(true)
+                .scaledToFill()
+                //                        .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 100, alignment: .center)
+                .clipped()
+                .cornerRadius(10)
+        }.padding(.leading)
+        .padding(.trailing)
+        .background(Color.white)
+        .cornerRadius(15)
+        .contentShape(RoundedRectangle(cornerRadius: 15))
+        .contextMenu {
+            Button(action: {
+            }) {
+                Label("Open in Safari", systemImage: "safari")
+            }
+            
+            Button(action: {
+            }) {
+                Label("Share on Twitter", systemImage: "square.and.arrow.up")
+            }
+        }.cornerRadius(15)
     }
 }
