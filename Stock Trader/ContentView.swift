@@ -11,29 +11,33 @@ struct ContentView: View {
     let title = "Stocks"
     
     var stocks: [Stock] = [
-        Stock(ticker: "AAPL", name: "Aaple", shares: 10.00, price: 111.20, change: -5.40),
-        Stock(ticker: "GOOG",  name: "Aaple",shares: 10.00, price: 111.20, change: -5.40),
-        Stock(ticker: "W",  name: "Aaple", shares: 10.00, price: 111.20, change: -5.40),
-        Stock(ticker: "MSFT", name: "Aaple", shares: 10.00, price: 111.20, change: -5.40)
+//        Stock(ticker: "AAPL", name: "Aaple", shares: 10.00, price: 111.20, change: -5.40),
+//        Stock(ticker: "GOOG",  name: "Aaple",shares: 10.00, price: 111.20, change: -5.40),
+//        Stock(ticker: "W",  name: "Aaple", shares: 10.00, price: 111.20, change: -5.40),
+//        Stock(ticker: "MSFT", name: "Aaple", shares: 10.00, price: 111.20, change: -5.40)
     ]
     
     @State var searchText: String = ""
     @ObservedObject var searchBar: SearchBar = SearchBar()
+    @StateObject var searchStore: SearchStore = SearchStore()
     
     var body: some View {
         NavigationView {
             List{
-                //Date
-                Text (Date(), style: .date).font(.title).bold().foregroundColor(.gray)
-                SectionView(title: "Portfolio", stocks: stocks, searchBar: searchBar)
-                SectionView(title: "Favorites", stocks: stocks, searchBar: searchBar)
-                ListFooter()
+                if(searchBar.stocks.count > 0){
+                    SearchView(searchBar: searchBar)
+                }
+                else {
+                    //Date
+                    Text (Date(), style: .date).font(.title).bold().foregroundColor(.gray)
+                    SectionView(title: "Portfolio", stocks: stocks, searchBar: searchBar)
+                    SectionView(title: "Favorites", stocks: stocks, searchBar: searchBar)
+                    ListFooter()
+                }
             }
             .navigationBarTitle("Stocks")
             .add(self.searchBar)
-        
         }
-        
     }
 }
 
@@ -75,6 +79,32 @@ struct StockCell: View {
             }
         }
     }
+}
+
+struct SearchCell: View {
+    var stock: Stock
+    var body: some View {
+        NavigationLink(destination: StockDetail(stock: stock))
+        {
+            VStack(alignment: .leading){
+                Text(stock.ticker).bold()
+                Text("\(stock.name)").font(.subheadline).foregroundColor(.secondary)
+            }
+        }
+    }
+}
+
+struct SearchView: View {
+    
+    @ObservedObject var searchBar: SearchBar
+    
+    var body: some View {
+        ForEach(searchBar.stocks,
+                    id: \.self){
+                stock in
+                SearchCell(stock: stock)
+            }
+        }
 }
 
 struct SectionView: View {

@@ -10,7 +10,6 @@ import Kingfisher
 
 struct StockDetail: SwiftUI.View {
     
-    
     var stock: Stock;
    // let stock = Stock(ticker: "MSFT", shares: 10.00, price: 111.20, change: -5.40)
 
@@ -35,7 +34,8 @@ struct StockDetail: SwiftUI.View {
 struct StockDetail_Previews: PreviewProvider {
     static var previews: some SwiftUI.View {
         NavigationView{
-            StockDetail(stock: Stock(ticker: "MSFT", name: "Microsoft Corporation", shares: 10.00, price: 111.20, change: -5.40))
+//            StockDetail(stock: Stock(ticker: "MSFT", name: "Microsoft Corporation", shares: 10.00, price: 111.20, change: -5.40)
+//            )
         }
     }
 }
@@ -75,12 +75,9 @@ struct DetailView: SwiftUI.View {
                 }.padding()
                 Spacer()
             }
-           
-            
+        
             Text("Trade Microsoft Corporation shares").bold()
-            
             Spacer()
-
             HStack{
                 TextField("0", text: $amount).font(.largeTitle)
                 Text(Int(amount) ?? 0 > 1 ? "Shares" : "Share").font(.title)
