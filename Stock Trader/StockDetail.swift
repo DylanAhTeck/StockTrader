@@ -10,19 +10,23 @@ import Kingfisher
 
 struct StockDetail: SwiftUI.View {
     
-    var stock: Stock;
-   // let stock = Stock(ticker: "MSFT", shares: 10.00, price: 111.20, change: -5.40)
-
+    var stock: Stock
+    @ObservedObject var stockVM: StockVM
+    @State var searchText: String = ""
+    init(stock: Stock){
+        self.stock = stock
+        stockVM = StockVM(stock: stock)
+    }
+    
     var body: some SwiftUI.View {
         ScrollView
         {
             VStack{
                 StockOverviewView(stock: stock)
                 PortfolioView()
-                StatsView()
+                StatsView(stockVM: stockVM)
                 //About
                 AboutView()
-                
                 //News
                 NewsView()
             }.navigationTitle(stock.ticker)//.padding(.leading)
@@ -208,10 +212,7 @@ struct PortfolioView: SwiftUI.View {
 }
 
 struct StatsView: SwiftUI.View {
-    let statKeys = ["last", "Open Price", "High", "Low", "Mid", "Volume", "Bid Price"]
-    
-    let data = ["last": 12, "Open Price": 4, "High": 2, "Low": 34.2, "Mid": 32.2,
-                "Volume": 12,"Bid Price": 12]
+    @ObservedObject var stockVM: StockVM
     
     let rows = [
         GridItem(.flexible(minimum:35), spacing: 0, alignment:.leading),
@@ -228,14 +229,13 @@ struct StatsView: SwiftUI.View {
                 }
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: rows, alignment:.center, spacing: 20) {
-                        ForEach(statKeys, id: \.self){
-                            statKey in
-                            
-                            let key = statKey != "last" ? statKey : "Current Price"
-                            let value = String(format: "%.2f", data[statKey, default: 0.0])
-                            
-                            Text("\(key): \(value)")
-                        }
+                        Text("Current Price: \(String(format: "%.2f", stockVM.stats.last))")
+                        Text("Open Price: \(String(format: "%.2f", stockVM.stats.open))")
+                        Text("High: \(String(format: "%.2f", stockVM.stats.high))")
+                        Text("Low: \(String(format: "%.2f", stockVM.stats.low))")
+                        Text("Mid: \(String(format: "%.2f", stockVM.stats.mid))")
+                        Text("Volume: \(stockVM.stats.volume)")
+                        Text("Bid Price: \(String(format: "%.2f", stockVM.stats.bidPrice))")
                     }
                 }
             }
