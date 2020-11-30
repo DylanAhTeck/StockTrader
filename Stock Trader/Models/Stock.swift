@@ -12,7 +12,7 @@ protocol JSONable {
     init?(parameter: JSON)
 }
 
-struct Stock: Hashable, Identifiable, Decodable, JSONable {
+struct Stock: Hashable, Identifiable, Codable, JSONable {
     var id = UUID()
     let ticker: String
     let name: String
@@ -26,6 +26,13 @@ struct Stock: Hashable, Identifiable, Decodable, JSONable {
         shares = parameter["shares"].floatValue
         price = parameter["price"].floatValue
         change = parameter["change"].floatValue
+    }
+    enum CodingKeys: String, CodingKey{
+        case ticker
+        case name
+        case shares
+        case price
+        case change
     }
     
    // init(ticker: String, name: String, shares: Float, price: )

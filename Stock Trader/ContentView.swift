@@ -19,7 +19,6 @@ struct ContentView: View {
     
     @State var searchText: String = ""
     @ObservedObject var searchBar: SearchBar = SearchBar()
-    @StateObject var searchStore: SearchStore = SearchStore()
     
     var body: some View {
         NavigationView {
