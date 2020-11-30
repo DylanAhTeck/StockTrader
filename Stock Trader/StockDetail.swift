@@ -58,10 +58,127 @@ struct StockOverviewView: SwiftUI.View {
 }
 
 struct DetailView: SwiftUI.View {
+    
+    @Binding var showingDetail: Bool
+    @State private var amount: String = ""
+    
+    @State private var lightsOn: Bool = false
+    @State private var showToast: Bool = false
+    
     var body: some SwiftUI.View {
-        Text("Detail")
+        VStack{
+            HStack{
+                Button(action: {
+                    self.showingDetail.toggle()
+                }) {
+                    Image(systemName: "xmark").foregroundColor(.black)
+                }.padding()
+                Spacer()
+            }
+           
+            
+            Text("Trade Microsoft Corporation shares").bold()
+            
+            Spacer()
+
+            HStack{
+                TextField("0", text: $amount).font(.largeTitle)
+                Text(Int(amount) ?? 0 > 1 ? "Shares" : "Share").font(.title)
+            }.padding()
+            HStack{
+                Spacer()
+                Text("x $204.72.share = $\(amount)")
+            }
+            Spacer()
+            Text("$10368.42 available to buy MSFT")
+            HStack{
+                Button(action : {
+                    withAnimation {
+                        self.showToast.toggle()
+                    }
+                }
+                ){Text("Buy")}
+                    .padding()
+                    .frame(minWidth: 0, maxWidth:150)
+                    .background(Color.green)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(40)
+                    .padding(.trailing)
+                
+                Button(action: {
+                    withAnimation {
+                        self.showToast.toggle()
+                    }
+                }
+                ){Text("Sell")}
+                    .padding()
+                    .frame(minWidth: 0, maxWidth:150)
+                    .background(Color.green)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(40)
+                    .padding(.trailing)
+            }.padding()
+        }.toast(isPresented: self.$showToast) {
+            VStack {
+                Text("Congratulations!").font(.largeTitle).bold().padding(.bottom)
+                Text("You have successfully sold 1 share of MSFT")
+            }.foregroundColor(.white)
+        }
     }
 }
+
+struct Toast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI.View, Content: SwiftUI.View {
+    @Binding var isPresented: Bool
+    let presenter: () -> Presenting
+    let content: () -> Content
+    let delay: TimeInterval = 2
+
+    var body: some SwiftUI.View {
+
+        return GeometryReader { geometry in
+            
+            ZStack(alignment: .bottom) {
+                self.presenter()
+                ZStack {
+                    Rectangle()
+                        .fill(Color.green).ignoresSafeArea(edges: /*@START_MENU_TOKEN@*/.bottom/*@END_MENU_TOKEN@*/)
+                                        
+                    VStack{
+                        Spacer()
+                        self.content()
+                        Spacer()
+                        
+                        Button(action: {
+                            withAnimation {
+                                self.isPresented = false;
+                            }
+                        }){Text("Done")}
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .padding()
+                        .background(Color.white)
+                        .foregroundColor(.green)
+                        .cornerRadius(40)
+                        
+                    }.padding()
+                    
+                }
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                .opacity(self.isPresented ? 1 : 0)
+            }
+        }
+    }
+}
+
+extension SwiftUI.View {
+    func toast<Content>(isPresented: Binding<Bool>, content: @escaping () -> Content) -> some SwiftUI.View where Content: SwiftUI.View {
+        Toast(
+            isPresented: isPresented,
+            presenter: { self },
+            content: content
+        )
+    }
+}
+
 struct PortfolioView: SwiftUI.View {
     @State var showingDetail = false
     
@@ -86,7 +203,7 @@ struct PortfolioView: SwiftUI.View {
                         .cornerRadius(40)
                         .padding(.trailing)
                     .sheet(isPresented: $showingDetail){
-                        DetailView()
+                        DetailView(showingDetail: $showingDetail)
                     }
                 }
             }.padding(.leading)
