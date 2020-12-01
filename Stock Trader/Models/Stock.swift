@@ -40,7 +40,7 @@ struct Stock: Hashable, Identifiable, Codable, JSONable {
     }
     
     init(){
-
+        
     }
  
 }

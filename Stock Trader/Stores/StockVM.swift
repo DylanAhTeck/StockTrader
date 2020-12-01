@@ -22,6 +22,23 @@ class StockVM: ObservableObject {
         self.getDescription()
     }
     
+    func getLatestPrice() {
+        AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
+            .responseJSON {
+            (response) in
+                switch response.result {
+                case .success(let data):
+                    let json = JSON(data)
+                    if let statsArray = json.to(type: Stats.self){
+                        let arr  = statsArray as! [Stats]
+                        self.stats = arr[0]
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+        }
+    }
+    
     func getStats(){
         AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
@@ -32,6 +49,7 @@ class StockVM: ObservableObject {
                     if let statsArray = json.to(type: Stats.self){
                         let arr  = statsArray as! [Stats]
                         self.stats = arr[0]
+                        self.stats.change = self.stats.last - self.stats.prevClose
                     }
                 case .failure(let error):
                     print(error)
@@ -64,8 +82,8 @@ class StockVM: ObservableObject {
                     let json = JSON(data)
                     if let stocksArray = json.to(type: Stock.self){
                         let stocksArr = stocksArray as! [Stock]
-                        if stocksArr.count > 0 && stocksArr[0].description != "" {
-                            self.stock.description = stocksArr[0].description
+                        if stocksArr.count == 1  {
+                            self.stock = stocksArr[0]
                         }
                     }
                 case .failure(let error):

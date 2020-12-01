@@ -22,7 +22,7 @@ struct StockDetail: SwiftUI.View {
         ScrollView
         {
             VStack{
-                StockOverviewView(stock: stock)
+                StockOverviewView(stockVM: stockVM)
                 PortfolioView()
                 StatsView(stockVM: stockVM)
                 //About
@@ -44,16 +44,16 @@ struct StockDetail_Previews: PreviewProvider {
 }
 
 struct StockOverviewView: SwiftUI.View {
-    let stock: Stock
+    @ObservedObject var stockVM: StockVM
     var body: some SwiftUI.View {
         Section {
             HStack{
-                Text(stock.name).font(.subheadline).foregroundColor(.secondary)
+                Text(stockVM.stock.name).font(.subheadline).foregroundColor(.secondary)
                 Spacer()
             }
             HStack(alignment: .firstTextBaseline){
-                Text("$\(String(format: "%.2f", stock.price))").bold().font(.largeTitle)
-                Text("$(\(String(format: "%.2f", stock.change)))").font(.title2).foregroundColor(.green)
+                Text("$\(String(format: "%.2f", stockVM.stats.last))").bold().font(.largeTitle)
+                Text("$(\(String(format: "%.2f", stockVM.stats.change)))").font(.title2).foregroundColor(stockVM.stats.change == 0 ? .gray : stockVM.stats.change < 0 ? .red : .green)
                 Spacer()
             }
         }.padding(.leading)
