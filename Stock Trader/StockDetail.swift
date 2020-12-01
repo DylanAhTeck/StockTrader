@@ -26,7 +26,7 @@ struct StockDetail: SwiftUI.View {
                 PortfolioView()
                 StatsView(stockVM: stockVM)
                 //About
-                AboutView()
+                AboutView(stockVM: stockVM)
                 //News
                 NewsView(stockVM: stockVM)
             }.navigationTitle(stock.ticker)//.padding(.leading)
@@ -38,8 +38,7 @@ struct StockDetail: SwiftUI.View {
 struct StockDetail_Previews: PreviewProvider {
     static var previews: some SwiftUI.View {
         NavigationView{
-//            StockDetail(stock: Stock(ticker: "MSFT", name: "Microsoft Corporation", shares: 10.00, price: 111.20, change: -5.40)
-//            )
+            StockDetail(stock: Stock())
         }
     }
 }
@@ -245,6 +244,7 @@ struct StatsView: SwiftUI.View {
 
 struct AboutView: SwiftUI.View {
     @State var moreText = false
+    @ObservedObject var stockVM: StockVM
     
     var body: some SwiftUI.View {
         Section{
@@ -254,8 +254,9 @@ struct AboutView: SwiftUI.View {
                     Spacer()
                 }
                 HStack(){
-                    Text("Amazon is guided by four principles: customer obsession rather than competitior focus, passion for invention, commitment to customers, etc.").lineLimit(moreText ? nil : 2)
-                    Spacer()
+                    Text(stockVM.stock.description)
+                        .lineLimit(moreText ? nil : 2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 HStack(){
                     Spacer()
@@ -347,7 +348,7 @@ struct NewsArticleView: SwiftUI.View {
                 }
             }
             
-            KFImage(URL(string: newsArticle.urlToImage)!)
+            KFImage(URL(string: newsArticle.urlToImage))
                 .resizable()
                 .cancelOnDisappear(true)
                 .scaledToFill()

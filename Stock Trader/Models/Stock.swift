@@ -14,11 +14,12 @@ protocol JSONable {
 
 struct Stock: Hashable, Identifiable, Codable, JSONable {
     var id = UUID()
-    let ticker: String
-    let name: String
-    let shares: Float
-    let price: Float
-    let change: Float
+    var ticker: String = ""
+    var name: String = ""
+    var shares: Float = 0.0
+    var price: Float = 0.0
+    var change: Float = 0.0
+    var description: String = ""
     
     init(parameter: JSON){
         ticker = parameter["ticker"].stringValue
@@ -26,16 +27,22 @@ struct Stock: Hashable, Identifiable, Codable, JSONable {
         shares = parameter["shares"].floatValue
         price = parameter["price"].floatValue
         change = parameter["change"].floatValue
+        description = parameter["description"].stringValue
     }
+    
     enum CodingKeys: String, CodingKey{
         case ticker
         case name
         case shares
         case price
         case change
+        case description
     }
     
-   // init(ticker: String, name: String, shares: Float, price: )
+    init(){
+
+    }
+ 
 }
 
 extension JSON {
