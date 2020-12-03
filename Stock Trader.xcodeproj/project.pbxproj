@@ -26,6 +26,7 @@
 		C9AF441C2571291500D561FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AF441B2571291400D561FD /* Assets.xcassets */; };
 		C9AF44302572265900D561FD /* ViewControllerResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF442F2572265900D561FD /* ViewControllerResolver.swift */; };
 		C9AF443525722B7500D561FD /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF443425722B7500D561FD /* SearchBar.swift */; };
+		C9F7EBE625789F4400B4CA78 /* FavoritesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F7EBE525789F4400B4CA78 /* FavoritesVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		C9AF441B2571291400D561FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Downloads/Assets.xcassets; sourceTree = "<group>"; };
 		C9AF442F2572265900D561FD /* ViewControllerResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerResolver.swift; sourceTree = "<group>"; };
 		C9AF443425722B7500D561FD /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		C9F7EBE525789F4400B4CA78 /* FavoritesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesVM.swift; sourceTree = "<group>"; };
 		E04E20338E0641DC17D67456 /* Pods_Stock_Trader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_Trader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6A0050B7B62E1861A612452 /* Pods-Stock Trader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader.release.xcconfig"; path = "Target Support Files/Pods-Stock Trader/Pods-Stock Trader.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,6 +137,7 @@
 			children = (
 				C933B61825754F0300E898C2 /* PortfolioVM.swift */,
 				C933B6202575554600E898C2 /* StockVM.swift */,
+				C9F7EBE525789F4400B4CA78 /* FavoritesVM.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				C933B61925754F0300E898C2 /* PortfolioVM.swift in Sources */,
 				C933B6212575554700E898C2 /* StockVM.swift in Sources */,
 				C9AF43EB25711B8700D561FD /* SceneDelegate.swift in Sources */,
+				C9F7EBE625789F4400B4CA78 /* FavoritesVM.swift in Sources */,
 				C9AF43ED25711B8700D561FD /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

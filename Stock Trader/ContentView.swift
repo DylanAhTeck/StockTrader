@@ -19,18 +19,19 @@ struct ContentView: View {
     
     @State var searchText: String = ""
     @ObservedObject var searchBar: SearchBar = SearchBar()
+    @ObservedObject var favoritesVM: FavoritesVM = FavoritesVM()
     
     var body: some View {
         NavigationView {
             List{
-                if(searchBar.stocks.count > 0){
-                    SearchView(searchBar: searchBar)
+                if(searchBar.searchText.count > 0){
+                    SearchView(searchBar: searchBar, favoritesVM: favoritesVM)
                 }
                 else {
                     //Date
                     Text (Date(), style: .date).font(.title).bold().foregroundColor(.gray)
-                    SectionView(title: "Portfolio", stocks: stocks, searchBar: searchBar)
-                    SectionView(title: "Favorites", stocks: stocks, searchBar: searchBar)
+//                    SectionView(title: "Portfolio", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar)
+                    SectionView(title: "Favorites", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar, favoritesVM: favoritesVM)
                     ListFooter()
                 }
             }
@@ -42,7 +43,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(favoritesVM: FavoritesVM())
     }
 }
 
@@ -64,8 +65,9 @@ struct ListFooter: View {
 
 struct StockCell: View {
     var stock: Stock
+    @ObservedObject var favoritesVM: FavoritesVM
     var body: some View {
-        NavigationLink(destination: StockDetail(stock: stock))
+        NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM))
         {
             VStack(alignment: .leading){
                 Text(stock.ticker).bold()
@@ -82,8 +84,10 @@ struct StockCell: View {
 
 struct SearchCell: View {
     var stock: Stock
+    @ObservedObject var favoritesVM: FavoritesVM
+
     var body: some View {
-        NavigationLink(destination: StockDetail(stock: stock))
+        NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM))
         {
             VStack(alignment: .leading){
                 Text(stock.ticker).bold()
@@ -96,20 +100,23 @@ struct SearchCell: View {
 struct SearchView: View {
     
     @ObservedObject var searchBar: SearchBar
-    
+    @ObservedObject var favoritesVM: FavoritesVM
+
     var body: some View {
         ForEach(searchBar.stocks,
                     id: \.self){
                 stock in
-                SearchCell(stock: stock)
+                SearchCell(stock: stock, favoritesVM: favoritesVM)
             }
         }
 }
 
 struct SectionView: View {
     let title: String
-    let stocks: [Stock]
+    @Binding var stocks: [Stock]
     @ObservedObject var searchBar: SearchBar
+    @ObservedObject var favoritesVM: FavoritesVM
+
     var body: some View {
         Section(header: Text(title)) {
             //ScrollMovies(type: .currentMoviesInTheater)
@@ -120,12 +127,17 @@ struct SectionView: View {
                     Text("19961.60").bold().font(.title)
                 }
             }
-            ForEach(stocks.filter {
-                        searchBar.searchText.isEmpty ||
-                            $0.ticker.localizedStandardContains(searchBar.searchText)},
+
+            //TODO: Fix this
+//            ForEach(stocks.filter {
+//                        searchBar.searchText.isEmpty
+//                            ||
+//                     $0.ticker.localizedStandardContains(searchBar.searchText)
+//            },
+            ForEach(stocks,
                     id: \.self){
                 stock in
-                StockCell(stock: stock)
+                StockCell(stock: stock, favoritesVM: favoritesVM)
             }
         }
     }

@@ -11,19 +11,25 @@ import Alamofire
 import SwiftyJSON
 
 class StockVM: ObservableObject {
+    
+    //Old url: http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com
+    private let url = "http://stocktraderbackend-env.eba-xpqeibcm.us-east-1.elasticbeanstalk.com"
     @Published var stock: Stock
     @Published var stats: Stats = Stats()
     @Published var news: [NewsArticle] = []
     
-    init(stock: Stock) {
+    @ObservedObject var favoritesVM: FavoritesVM
+    
+    init(stock: Stock, favoritesVM: FavoritesVM) {
         self.stock = stock
+        self.favoritesVM = favoritesVM
         self.getStats()
         self.getNews()
         self.getDescription()
     }
     
     func getLatestPrice() {
-        AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
+        AF.request("\(self.url)/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
                 switch response.result {
@@ -40,7 +46,7 @@ class StockVM: ObservableObject {
     }
     
     func getStats(){
-        AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
+        AF.request("\(self.url)/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
                 switch response.result {
@@ -58,7 +64,7 @@ class StockVM: ObservableObject {
     }
     
     func getNews(){
-        AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/news/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
+        AF.request("\(self.url)/details/news/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
                 switch response.result {
@@ -74,7 +80,7 @@ class StockVM: ObservableObject {
     }
     
     func getDescription() {
-        AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/details/description/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
+        AF.request("\(self.url)/details/description/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
                 switch response.result {
@@ -83,7 +89,8 @@ class StockVM: ObservableObject {
                     if let stocksArray = json.to(type: Stock.self){
                         let stocksArr = stocksArray as! [Stock]
                         if stocksArr.count == 1  {
-                            self.stock = stocksArr[0]
+                            self.stock.description = stocksArr[0].description
+                            self.stock.name = stocksArr[0].name
                         }
                     }
                 case .failure(let error):

@@ -12,7 +12,14 @@ protocol JSONable {
     init?(parameter: JSON)
 }
 
-struct Stock: Hashable, Identifiable, Codable, JSONable {
+class Stock: Hashable, Identifiable, Codable, JSONable, Equatable {
+    static func == (lhs: Stock, rhs: Stock) -> Bool {
+        lhs.ticker == rhs.ticker
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     var id = UUID()
     var ticker: String = ""
     var name: String = ""
@@ -20,8 +27,9 @@ struct Stock: Hashable, Identifiable, Codable, JSONable {
     var price: Float = 0.0
     var change: Float = 0.0
     var description: String = ""
+    var isFavorite: Bool = false
     
-    init(parameter: JSON){
+    required init(parameter: JSON){
         ticker = parameter["ticker"].stringValue
         name = parameter["name"].stringValue
         shares = parameter["shares"].floatValue

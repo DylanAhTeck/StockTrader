@@ -12,10 +12,15 @@ struct StockDetail: SwiftUI.View {
     
     var stock: Stock
     @ObservedObject var stockVM: StockVM
+    @State private var showFavoriteToast: Bool = false
+
+    //@ObservedObject var portfolioVM: PortfolioVM
+    @ObservedObject var favoritesVM: FavoritesVM
     @State var searchText: String = ""
-    init(stock: Stock){
+    init(stock: Stock, favoritesVM: FavoritesVM){
         self.stock = stock
-        stockVM = StockVM(stock: stock)
+        self.favoritesVM = favoritesVM
+        stockVM = StockVM(stock: stock, favoritesVM: favoritesVM)
     }
     
     var body: some SwiftUI.View {
@@ -29,8 +34,33 @@ struct StockDetail: SwiftUI.View {
                 AboutView(stockVM: stockVM)
                 //News
                 NewsView(stockVM: stockVM)
-            }.navigationTitle(stock.ticker)//.padding(.leading)
-         
+            }
+            .navigationTitle(stock.ticker)//.padding(.leading)
+            .navigationBarItems(trailing:
+            Button(action: {
+                favoritesVM.toggleStock(stock: stockVM.stock)
+                
+                    withAnimation {
+                    self.showFavoriteToast = true
+                    }
+                }) {
+                
+                stockVM.stock.isFavorite ?
+                    Image(systemName: "plus.circle.fill"):
+                    Image(systemName: "plus.circle")
+                
+            }.padding()
+            )
+ 
+        }.toast(isPresented: self.$showFavoriteToast) {
+            HStack {
+                if(stockVM.stock.isFavorite) {
+                    Text("Adding \(stockVM.stock.ticker) to Favorites")
+                }
+                else{
+                    Text("Removing \(stockVM.stock.ticker) from Favorites")
+                }
+            }
         }
     }
 }
@@ -38,7 +68,7 @@ struct StockDetail: SwiftUI.View {
 struct StockDetail_Previews: PreviewProvider {
     static var previews: some SwiftUI.View {
         NavigationView{
-            StockDetail(stock: Stock())
+            StockDetail(stock: Stock(), favoritesVM: FavoritesVM())
         }
     }
 }
@@ -105,6 +135,7 @@ struct DetailView: SwiftUI.View {
                     .cornerRadius(40)
                     .padding(.trailing)
                 
+                
                 Button(action: {
                     withAnimation {
                         self.showToast.toggle()
@@ -118,7 +149,7 @@ struct DetailView: SwiftUI.View {
                     .cornerRadius(40)
                     .padding(.trailing)
             }.padding()
-        }.toast(isPresented: self.$showToast) {
+        }.successToast(isPresented: self.$showToast) {
             VStack {
                 Text("Congratulations!").font(.largeTitle).bold().padding(.bottom)
                 Text("You have successfully sold 1 share of MSFT")
@@ -127,7 +158,7 @@ struct DetailView: SwiftUI.View {
     }
 }
 
-struct Toast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI.View, Content: SwiftUI.View {
+struct SuccessToast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI.View, Content: SwiftUI.View {
     @Binding var isPresented: Bool
     let presenter: () -> Presenting
     let content: () -> Content
@@ -170,12 +201,58 @@ struct Toast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI.View, 
 }
 
 extension SwiftUI.View {
-    func toast<Content>(isPresented: Binding<Bool>, content: @escaping () -> Content) -> some SwiftUI.View where Content: SwiftUI.View {
-        Toast(
+    func successToast<Content>(isPresented: Binding<Bool>, content: @escaping () -> Content) -> some SwiftUI.View where Content: SwiftUI.View {
+        SuccessToast(
             isPresented: isPresented,
             presenter: { self },
             content: content
         )
+    }
+    
+    func toast<Content>(isPresented: Binding<Bool>, content: @escaping () -> Content) -> some SwiftUI.View where Content: SwiftUI.View {
+           Toast(
+               isPresented: isPresented,
+               presenter: { self },
+               content: content
+           )
+       }
+}
+
+struct Toast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI.View, Content: SwiftUI.View {
+    @Binding var isPresented: Bool
+    let presenter: () -> Presenting
+    let content: () -> Content
+    let delay: TimeInterval = 2
+
+    var body: some SwiftUI.View {
+        if self.isPresented {
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.delay) {
+                withAnimation {
+                    self.isPresented = false
+                }
+            }
+        }
+
+        return GeometryReader { geometry in
+            ZStack(alignment: .bottom) {
+                self.presenter()
+              
+                ZStack {
+                    Rectangle()
+                        .fill(Color.gray)
+                        .cornerRadius(30)
+                    
+                    VStack{
+                        Spacer()
+                        self.content().foregroundColor(.white)
+                        Spacer()
+                    }
+                    
+                }
+                .frame(width: geometry.size.width/1.25, height: geometry.size.height/12)
+                .opacity(self.isPresented ? 1 : 0)
+            }
+        }
     }
 }
 

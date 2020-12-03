@@ -14,7 +14,8 @@ class SearchBar: NSObject, ObservableObject {
     let searchController: UISearchController = UISearchController(searchResultsController: nil)
     @Published var searchText: String = ""
     @Published var stocks: [Stock] = []
-    
+    private let url = "http://stocktraderbackend-env.eba-xpqeibcm.us-east-1.elasticbeanstalk.com"
+
     var subscription: Set<AnyCancellable> = []
     
     private var cancellable: AnyCancellable? = nil
@@ -44,7 +45,7 @@ class SearchBar: NSObject, ObservableObject {
     }
     
     private func search(ticker: String){
-        AF.request("http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com/autocomplete/\(ticker)", method: .get, encoding: JSONEncoding.default)
+        AF.request("\(self.url)/autocomplete/\(ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
                 switch response.result {
@@ -65,7 +66,6 @@ extension SearchBar: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         // Publish search bar text changes.
         if let searchBarText = searchController.searchBar.text {
-            print(searchBarText)
             self.searchText = searchBarText
         }
     }

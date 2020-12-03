@@ -18,6 +18,7 @@ class PortfolioVM: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: Self.saveKey){
             if let decoded = try? JSONDecoder().decode([Stock].self, from: data){
                 self.portfolioStocks = decoded
+                print(self.portfolioStocks)
                 return
             }
         }
