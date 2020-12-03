@@ -18,11 +18,11 @@ class StockVM: ObservableObject {
     @Published var stats: Stats = Stats()
     @Published var news: [NewsArticle] = []
     
-    @ObservedObject var favoritesVM: FavoritesVM
+    //@ObservedObject var favoritesVM: FavoritesVM
     
-    init(stock: Stock, favoritesVM: FavoritesVM) {
+    init(stock: Stock) {
         self.stock = stock
-        self.favoritesVM = favoritesVM
+//        self.favoritesVM = favoritesVM
         self.getStats()
         self.getNews()
         self.getDescription()

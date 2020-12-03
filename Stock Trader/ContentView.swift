@@ -26,7 +26,7 @@ struct ContentView: View {
         NavigationView {
             List{
                 if(searchBar.searchText.count > 0){
-                    SearchView(searchBar: searchBar, favoritesVM: favoritesVM)
+                    SearchView(searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
                 }
                 else {
                     //Date
@@ -80,7 +80,7 @@ struct StockCell: View {
     @ObservedObject var portfolioVM: PortfolioVM
     //var index: Int
     var body: some View {
-        NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM))
+        NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM, portfolioVM: portfolioVM))
         {
             VStack(alignment: .leading){
                 Text(stock.ticker).bold()
@@ -98,8 +98,10 @@ struct StockCell: View {
 struct SearchCell: View {
     var stock: Stock
     @ObservedObject var favoritesVM: FavoritesVM
+    @ObservedObject var portfolioVM: PortfolioVM
+
     var body: some View {
-        NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM))
+        NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM, portfolioVM: portfolioVM))
         {
             VStack(alignment: .leading){
                 Text(stock.ticker).bold()
@@ -113,12 +115,13 @@ struct SearchView: View {
     
     @ObservedObject var searchBar: SearchBar
     @ObservedObject var favoritesVM: FavoritesVM
+    @ObservedObject var portfolioVM: PortfolioVM
 
     var body: some View {
         ForEach(searchBar.stocks,
                     id: \.self){
                 stock in
-                SearchCell(stock: stock, favoritesVM: favoritesVM)
+                SearchCell(stock: stock, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
             }
         }
 }

@@ -14,13 +14,14 @@ struct StockDetail: SwiftUI.View {
     @ObservedObject var stockVM: StockVM
     @State private var showFavoriteToast: Bool = false
 
-    //@ObservedObject var portfolioVM: PortfolioVM
+    @ObservedObject var portfolioVM: PortfolioVM
     @ObservedObject var favoritesVM: FavoritesVM
     @State var searchText: String = ""
-    init(stock: Stock, favoritesVM: FavoritesVM){
+    init(stock: Stock, favoritesVM: FavoritesVM, portfolioVM: PortfolioVM){
         self.stock = stock
         self.favoritesVM = favoritesVM
-        stockVM = StockVM(stock: stock, favoritesVM: favoritesVM)
+        self.portfolioVM = portfolioVM
+        stockVM = StockVM(stock: stock)
     }
     
     var body: some SwiftUI.View {
@@ -28,7 +29,7 @@ struct StockDetail: SwiftUI.View {
         {
             VStack{
                 StockOverviewView(stockVM: stockVM)
-                PortfolioView()
+                PortfolioView(stockVM: stockVM, portfolioVM: portfolioVM)
                 StatsView(stockVM: stockVM)
                 //About
                 AboutView(stockVM: stockVM)
@@ -68,7 +69,7 @@ struct StockDetail: SwiftUI.View {
 struct StockDetail_Previews: PreviewProvider {
     static var previews: some SwiftUI.View {
         NavigationView{
-            StockDetail(stock: Stock(), favoritesVM: FavoritesVM())
+            StockDetail(stock: Stock(), favoritesVM: FavoritesVM(), portfolioVM: PortfolioVM())
         }
     }
 }
@@ -95,9 +96,11 @@ struct DetailView: SwiftUI.View {
     @Binding var showingDetail: Bool
     @State private var amount: String = ""
     
-    @State private var lightsOn: Bool = false
+    @State private var isBuyTransaction: Bool = false
     @State private var showToast: Bool = false
-    
+    @ObservedObject var stockVM: StockVM
+    @ObservedObject var portfolioVM: PortfolioVM
+
     var body: some SwiftUI.View {
         VStack{
             HStack{
@@ -109,7 +112,7 @@ struct DetailView: SwiftUI.View {
                 Spacer()
             }
         
-            Text("Trade Microsoft Corporation shares").bold()
+            Text("Trade \(stockVM.stock.name) shares").bold()
             Spacer()
             HStack{
                 TextField("0", text: $amount).font(.largeTitle)
@@ -117,12 +120,17 @@ struct DetailView: SwiftUI.View {
             }.padding()
             HStack{
                 Spacer()
-                Text("x $204.72.share = $\(amount)")
+                Text("x $\(String(format: "%.2f", stockVM.stats.last)) share = $\( String(format: "%.2f", (Float(amount) ?? 0) * stockVM.stats.last))")
             }
+           
             Spacer()
-            Text("$10368.42 available to buy MSFT")
+            Text("$\(String(format: "%.2f", portfolioVM.availableFunds)) available to buy \(stockVM.stock.ticker)")
             HStack{
                 Button(action : {
+                    
+                    
+                    portfolioVM.buy(stock: stockVM.stock, amount: Float(amount) ?? 0)
+                    self.isBuyTransaction = true
                     withAnimation {
                         self.showToast.toggle()
                     }
@@ -137,6 +145,8 @@ struct DetailView: SwiftUI.View {
                 
                 
                 Button(action: {
+                    
+                    self.isBuyTransaction = false
                     withAnimation {
                         self.showToast.toggle()
                     }
@@ -152,7 +162,13 @@ struct DetailView: SwiftUI.View {
         }.successToast(isPresented: self.$showToast) {
             VStack {
                 Text("Congratulations!").font(.largeTitle).bold().padding(.bottom)
-                Text("You have successfully sold 1 share of MSFT")
+                
+                if(isBuyTransaction){
+                    Text("You have successfully bought \(amount) \((Float(amount) ?? 0) <= 1 ? "share" : "shares") of \(stockVM.stock.ticker)")
+                }else {
+                    Text("You have successfully sold \(amount) \((Float(amount) ?? 0) <= 1 ? "share" : "shares") of \(stockVM.stock.ticker)")
+                }
+                
             }.foregroundColor(.white)
         }
     }
@@ -258,6 +274,8 @@ struct Toast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI.View, 
 
 struct PortfolioView: SwiftUI.View {
     @State var showingDetail = false
+    @ObservedObject var stockVM: StockVM
+    @ObservedObject var portfolioVM: PortfolioVM
     
     var body: some SwiftUI.View {
             VStack(alignment: .leading){
@@ -265,8 +283,9 @@ struct PortfolioView: SwiftUI.View {
                 HStack
                 {
                     VStack(alignment: .leading){
-                        Text("Shares Owned: 5.000").padding(1)
-                        Text("Market Value: $1013.40").padding(1)
+                        
+                        Text("Shares Owned: \(String(format: "%.2f", stockVM.stock.shares))").padding(1)
+                        Text("Market Value: $\(String(format: "%.2f", stockVM.stock.shares * stockVM.stock.price))").padding(1)
                     }
                     Spacer()
                     Button(action : {
@@ -280,7 +299,8 @@ struct PortfolioView: SwiftUI.View {
                         .cornerRadius(40)
                         .padding(.trailing)
                     .sheet(isPresented: $showingDetail){
-                        DetailView(showingDetail: $showingDetail)
+                        DetailView(showingDetail: $showingDetail, stockVM: stockVM,
+                                   portfolioVM: portfolioVM)
                     }
                 }
             }.padding(.leading)
@@ -386,8 +406,11 @@ struct TopNewsView: SwiftUI.View {
                 Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
                 Spacer()
             }
-            
-            Text(newsArticle.title).bold()
+            HStack{
+                Text(newsArticle.title).bold()
+                Spacer()
+            }
+           
         }
         .padding()
         .background(Color.white)

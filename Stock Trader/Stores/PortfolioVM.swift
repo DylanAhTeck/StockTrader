@@ -17,12 +17,15 @@ class PortfolioVM: ObservableObject {
     private let url = "http://stocktraderbackend-env.eba-xpqeibcm.us-east-1.elasticbeanstalk.com"
     static let saveKey = "PortfolioStocks"
     @Published var netWorth: Float
+    @Published var availableFunds: Float
+    
     var timer: Timer
 
     init() {
         self.portfolioStocks = []
         self.netWorth = 20000
         self.timer = Timer()
+        self.availableFunds = 20000
         
         if let data = UserDefaults.standard.data(forKey: Self.saveKey){
             if let decoded = try? JSONDecoder().decode([Stock].self, from: data){
@@ -91,13 +94,23 @@ class PortfolioVM: ObservableObject {
         }
     }
     
+    func update(_ stock: Stock){
+        remove(stock)
+        add(stock)
+    }
+    
     func calculateNetWorth(){
         self.netWorth = 20000
     }
     
-    func buy(){
-        
+    func buy(stock: Stock, amount: Float){
+        let cost = amount * stock.price
+        stock.shares += amount
+        self.availableFunds = self.availableFunds - cost
+        update(stock)
+        print("Bought \(amount) shares")
     }
+    
     func sell(){
         
     }
