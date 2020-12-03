@@ -10,6 +10,7 @@
 		465E2F23CD2EC966A42F75F9 /* Pods_Stock_Trader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E04E20338E0641DC17D67456 /* Pods_Stock_Trader.framework */; };
 		65D82E775D4A615063DD053E /* Pods_Stock_Trader_Stock_TraderUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */; };
 		C05138D95F2BB0092860E1C0 /* Pods_Stock_TraderTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426101C943215D1440DBF550 /* Pods_Stock_TraderTests.framework */; };
+		C92DE32D2579854700F542E5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92DE32C2579854600F542E5 /* WebView.swift */; };
 		C933B5FC257272BA00E898C2 /* StockDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933B5FB257272BA00E898C2 /* StockDetail.swift */; };
 		C933B61925754F0300E898C2 /* PortfolioVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933B61825754F0300E898C2 /* PortfolioVM.swift */; };
 		C933B6212575554700E898C2 /* StockVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933B6202575554600E898C2 /* StockVM.swift */; };
@@ -54,6 +55,7 @@
 		85735CD81502A9F555211ED3 /* Pods-Stock Trader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock Trader.debug.xcconfig"; path = "Target Support Files/Pods-Stock Trader/Pods-Stock Trader.debug.xcconfig"; sourceTree = "<group>"; };
 		B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_Trader_Stock_TraderUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90B19905C3B7F671E5BD926 /* Pods-Stock TraderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock TraderTests.release.xcconfig"; path = "Target Support Files/Pods-Stock TraderTests/Pods-Stock TraderTests.release.xcconfig"; sourceTree = "<group>"; };
+		C92DE32C2579854600F542E5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		C933B5FB257272BA00E898C2 /* StockDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetail.swift; sourceTree = "<group>"; };
 		C933B61825754F0300E898C2 /* PortfolioVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioVM.swift; sourceTree = "<group>"; };
 		C933B6202575554600E898C2 /* StockVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockVM.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				C9AF43E825711B8700D561FD /* AppDelegate.swift */,
 				C9AF43EA25711B8700D561FD /* SceneDelegate.swift */,
 				C9AF43EC25711B8700D561FD /* ContentView.swift */,
+				C92DE32C2579854600F542E5 /* WebView.swift */,
 				C933B5FB257272BA00E898C2 /* StockDetail.swift */,
 				C9AF441B2571291400D561FD /* Assets.xcassets */,
 				C9AF43F325711B9300D561FD /* LaunchScreen.storyboard */,
@@ -467,6 +470,7 @@
 			files = (
 				C9AF44302572265900D561FD /* ViewControllerResolver.swift in Sources */,
 				C933B6262575577200E898C2 /* Stats.swift in Sources */,
+				C92DE32D2579854700F542E5 /* WebView.swift in Sources */,
 				C933B62B257563E500E898C2 /* NewsArticle.swift in Sources */,
 				C9AF43E925711B8700D561FD /* AppDelegate.swift in Sources */,
 				C95CFAEF25724CBF0097A339 /* Stock.swift in Sources */,

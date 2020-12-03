@@ -19,9 +19,20 @@ struct ContentView: View {
     
     @State var searchText: String = ""
     @ObservedObject var searchBar: SearchBar = SearchBar()
-    @ObservedObject var favoritesVM: FavoritesVM = FavoritesVM()
-    @ObservedObject var portfolioVM: PortfolioVM = PortfolioVM()
+//    @ObservedObject var favoritesVM: FavoritesVM = FavoritesVM()
+//    @ObservedObject var portfolioVM: PortfolioVM = PortfolioVM()
+    @StateObject var favoritesVM: FavoritesVM = FavoritesVM()
+    @StateObject var portfolioVM: PortfolioVM = PortfolioVM()
+    @State var isEditable = false
 
+    func movePortfolioStock(from source:IndexSet, to destination: Int){
+        portfolioVM.portfolioStocks.move(fromOffsets: source, toOffset: destination)
+//        portfolioVM.move(from: source, to: destination)
+//        withAnimation{
+//            isEditable = false
+//        }
+    }
+    
     var body: some View {
         NavigationView {
             List{
@@ -29,23 +40,25 @@ struct ContentView: View {
                     SearchView(searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
                 }
                 else {
-                    //Date
-                    Text (Date(), style: .date).font(.title).bold().foregroundColor(.gray)
+             
                     SectionView(title: "Portfolio", stocks: $portfolioVM.portfolioStocks, searchBar: searchBar,
-                                favoritesVM: favoritesVM, portfolioVM: portfolioVM)
-                    SectionView(title: "Favorites", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
+                                favoritesVM: favoritesVM, portfolioVM: portfolioVM, isEditable: $isEditable)
+                    SectionView(title: "Favorites", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM, isEditable: $isEditable)
                     ListFooter()
                 }
             }
+            //.environment(\.editMode, isEditable ? .constant(.active) : .constant(.inactive))
+            .listStyle(PlainListStyle())
             .navigationBarTitle("Stocks")
+            .navigationBarItems(trailing: EditButton())
             .add(self.searchBar)
             .onAppear{
-            favoritesVM.startUpdates()
-            portfolioVM.startUpdates()
+//            favoritesVM.startUpdates()
+//            portfolioVM.startUpdates()
             }
             .onDisappear{
-                favoritesVM.stopUpdates()
-                portfolioVM.stopUpdates()
+//                favoritesVM.stopUpdates()
+//                portfolioVM.stopUpdates()
             }
         }
     }
@@ -84,12 +97,17 @@ struct StockCell: View {
         {
             VStack(alignment: .leading){
                 Text(stock.ticker).bold()
-                Text("\(String(format: "%.2f", stock.shares)) shares").font(.subheadline).foregroundColor(.secondary)
+                Text(stock.shares > 0 ? "\(String(format: "%.2f", stock.shares)) shares" : stock.name).font(.subheadline).foregroundColor(.secondary)
             }
             Spacer()
             VStack(alignment: .trailing){
+                
                 Text(String(format: "%.2f", stock.price)).bold()
-                Text(String(format: "%.2f", stock.change)).font(.subheadline).foregroundColor(.red)
+                //Text(String(format: "%.2f", stock.change)).font(.subheadline).foregroundColor(
+                //    stock.change > 0 ? .green : stock.change < 0 ? .red : .gray)
+                Label(String(format: "%.2f", stock.change), systemImage: stock.change > 0 ? "arrow.up.right" : stock.change < 0 ? "arrow.down.right" : "").font(.subheadline).foregroundColor(
+                       stock.change > 0 ? .green : stock.change < 0 ? .red : .gray)
+
             }
         }
     }
@@ -132,6 +150,8 @@ struct SectionView: View {
     @ObservedObject var searchBar: SearchBar
     @ObservedObject var favoritesVM: FavoritesVM
     @ObservedObject var portfolioVM: PortfolioVM
+    
+    @Binding var isEditable: Bool
 
     var body: some View {
         Section(header: Text(title)) {
@@ -148,6 +168,11 @@ struct SectionView: View {
                         id: \.self){
                     stock in
                     StockCell(stock: stock, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
+                }.onMove(perform: movePortfolioStock)
+                .onLongPressGesture {
+                    withAnimation {
+                        self.isEditable = true
+                    }
                 }
             }
 
@@ -157,8 +182,28 @@ struct SectionView: View {
                     stock in
                     StockCell(stock: stock, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
                 }
+                .onMove(perform: moveFavoriteStock)
+                .onDelete(perform: deleteFavoriteStock)
             }
 
         }
+    }
+    
+    func movePortfolioStock(from source:IndexSet, to destination: Int){
+        portfolioVM.move(from: source, to: destination)
+        withAnimation{
+            isEditable = false
+        }
+    }
+    
+    func moveFavoriteStock(from source:IndexSet, to destination: Int){
+        favoritesVM.move(from: source, to: destination)
+        withAnimation{
+            isEditable = false
+        }
+    }
+    
+    func deleteFavoriteStock(at offsets: IndexSet){
+        offsets.forEach { favoritesVM.delete($0) }
     }
 }

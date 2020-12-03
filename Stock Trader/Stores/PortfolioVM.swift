@@ -14,8 +14,10 @@ import SwiftyJSON
 class PortfolioVM: ObservableObject {
     
     @Published var portfolioStocks : [Stock]
-    private let url = "http://stocktraderbackend-env.eba-xpqeibcm.us-east-1.elasticbeanstalk.com"
+    private let url = "http://traderbackend-env.eba-mmcgukdc.us-west-1.elasticbeanstalk.com"
     static let saveKey = "PortfolioStocks"
+    static let networthKey = "NetWorth"
+
     @Published var netWorth: Float
     @Published var availableFunds: Float
     
@@ -30,9 +32,17 @@ class PortfolioVM: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: Self.saveKey){
             if let decoded = try? JSONDecoder().decode([Stock].self, from: data){
                 self.portfolioStocks = decoded
-                self.calculateNetWorth()
             }
         }
+        
+        if let data = UserDefaults.standard.data(forKey: Self.networthKey){
+            if let decoded = try? JSONDecoder().decode(Float.self, from: data){
+                self.netWorth = decoded
+            }
+        }
+        
+        self.calculateNetWorth()
+
         
         //let date = Date()
        // let timer = Timer(fireAt: date, interval: 15, target: self, selector: #selector(self.updateStocks), userInfo: nil, repeats: true)
@@ -48,6 +58,7 @@ class PortfolioVM: ObservableObject {
     }
     
     func stopUpdates(){
+        print("STOP PORTFOLIO UPDATE")
         self.timer.invalidate()
     }
     
@@ -94,24 +105,48 @@ class PortfolioVM: ObservableObject {
         }
     }
     
+    func move(from source: IndexSet, to destination: Int){
+        self.portfolioStocks.move(fromOffsets: source, toOffset: destination)
+        save()
+    }
+    
     func update(_ stock: Stock){
         remove(stock)
         add(stock)
     }
     
     func calculateNetWorth(){
-        self.netWorth = 20000
+        var stockWorth: Float = 0
+        self.portfolioStocks.forEach{
+            stock in
+            stockWorth += stock.price * stock.shares
+        }
+        self.netWorth = stockWorth + self.availableFunds
     }
     
     func buy(stock: Stock, amount: Float){
+        print(self.availableFunds)
+        print(self.netWorth)
+        
+        print(stock.price)
+        print(amount)
         let cost = amount * stock.price
         stock.shares += amount
         self.availableFunds = self.availableFunds - cost
+        
         update(stock)
+        calculateNetWorth()
         print("Bought \(amount) shares")
+        print(self.availableFunds)
+        print(self.netWorth)
     }
     
-    func sell(){
+    func sell(stock: Stock, amount: Float){
+        stock.shares = stock.shares - amount
+        self.availableFunds += amount * stock.price
         
+        update(stock)
+        calculateNetWorth()
+        print("Sold \(amount) shares")
     }
 }

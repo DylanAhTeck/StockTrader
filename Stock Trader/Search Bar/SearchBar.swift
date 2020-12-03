@@ -14,7 +14,7 @@ class SearchBar: NSObject, ObservableObject {
     let searchController: UISearchController = UISearchController(searchResultsController: nil)
     @Published var searchText: String = ""
     @Published var stocks: [Stock] = []
-    private let url = "http://stocktraderbackend-env.eba-xpqeibcm.us-east-1.elasticbeanstalk.com"
+    private let url = "http://traderbackend-env.eba-mmcgukdc.us-west-1.elasticbeanstalk.com"
 
     var subscription: Set<AnyCancellable> = []
     
@@ -24,8 +24,8 @@ class SearchBar: NSObject, ObservableObject {
         super.init()
         self.searchController.obscuresBackgroundDuringPresentation = false
         self.searchController.searchResultsUpdater = self
-        $searchText
-            .debounce(for: .seconds(1), scheduler: RunLoop.main)
+        cancellable = $searchText
+            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .map({
                 (string) -> String? in
@@ -33,7 +33,7 @@ class SearchBar: NSObject, ObservableObject {
                     self.stocks = [];
                     return nil
                 }
-                
+
                 return string
             })
             .compactMap{ $0 } // removes the nil values so the search string does not get passed down to the publisher chain
@@ -41,10 +41,17 @@ class SearchBar: NSObject, ObservableObject {
                 //
             } receiveValue: { [self] (searchField) in
                 search(ticker: searchField)
-            }.store(in: &subscription)
+            }
+           // .store(in: &subscription)
+    }
+    
+    deinit {
+        print("CANCELLED!")
+        cancellable?.cancel()
     }
     
     private func search(ticker: String){
+        print("HERE!")
         AF.request("\(self.url)/autocomplete/\(ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in

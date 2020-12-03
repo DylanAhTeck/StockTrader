@@ -11,7 +11,8 @@ import Kingfisher
 struct StockDetail: SwiftUI.View {
     
     var stock: Stock
-    @ObservedObject var stockVM: StockVM
+    @StateObject var stockVM: StockVM = StockVM()
+    
     @State private var showFavoriteToast: Bool = false
 
     @ObservedObject var portfolioVM: PortfolioVM
@@ -21,7 +22,6 @@ struct StockDetail: SwiftUI.View {
         self.stock = stock
         self.favoritesVM = favoritesVM
         self.portfolioVM = portfolioVM
-        stockVM = StockVM(stock: stock)
     }
     
     var body: some SwiftUI.View {
@@ -35,6 +35,10 @@ struct StockDetail: SwiftUI.View {
                 AboutView(stockVM: stockVM)
                 //News
                 NewsView(stockVM: stockVM)
+            }
+            .onAppear{
+                print(stock.ticker)
+                stockVM.update(stock: stock)
             }
             .navigationTitle(stock.ticker)//.padding(.leading)
             .navigationBarItems(trailing:
@@ -91,6 +95,8 @@ struct StockOverviewView: SwiftUI.View {
     }
 }
 
+
+
 struct DetailView: SwiftUI.View {
     
     @Binding var showingDetail: Bool
@@ -145,7 +151,7 @@ struct DetailView: SwiftUI.View {
                 
                 
                 Button(action: {
-                    
+                    portfolioVM.sell(stock: stockVM.stock, amount: Float(amount) ?? 0)
                     self.isBuyTransaction = false
                     withAnimation {
                         self.showToast.toggle()
@@ -159,16 +165,17 @@ struct DetailView: SwiftUI.View {
                     .cornerRadius(40)
                     .padding(.trailing)
             }.padding()
-        }.successToast(isPresented: self.$showToast) {
+        }
+        .successToast(isPresented: self.$showToast, showingDetail: self.$showingDetail) {
             VStack {
                 Text("Congratulations!").font(.largeTitle).bold().padding(.bottom)
-                
+
                 if(isBuyTransaction){
                     Text("You have successfully bought \(amount) \((Float(amount) ?? 0) <= 1 ? "share" : "shares") of \(stockVM.stock.ticker)")
                 }else {
                     Text("You have successfully sold \(amount) \((Float(amount) ?? 0) <= 1 ? "share" : "shares") of \(stockVM.stock.ticker)")
                 }
-                
+
             }.foregroundColor(.white)
         }
     }
@@ -176,6 +183,8 @@ struct DetailView: SwiftUI.View {
 
 struct SuccessToast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI.View, Content: SwiftUI.View {
     @Binding var isPresented: Bool
+    @Binding var showingDetail: Bool
+
     let presenter: () -> Presenting
     let content: () -> Content
     let delay: TimeInterval = 2
@@ -197,7 +206,8 @@ struct SuccessToast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI
                         
                         Button(action: {
                             withAnimation {
-                                self.isPresented = false;
+                                self.isPresented = false
+                                self.showingDetail.toggle()
                             }
                         }){Text("Done")}
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -217,9 +227,10 @@ struct SuccessToast<Presenting, Content>: SwiftUI.View where Presenting: SwiftUI
 }
 
 extension SwiftUI.View {
-    func successToast<Content>(isPresented: Binding<Bool>, content: @escaping () -> Content) -> some SwiftUI.View where Content: SwiftUI.View {
+    func successToast<Content>(isPresented: Binding<Bool>, showingDetail: Binding<Bool>, content: @escaping () -> Content) -> some SwiftUI.View where Content: SwiftUI.View {
         SuccessToast(
             isPresented: isPresented,
+            showingDetail: showingDetail,
             presenter: { self },
             content: content
         )
@@ -393,6 +404,8 @@ struct NewsView: SwiftUI.View {
 
 struct TopNewsView: SwiftUI.View {
     var newsArticle: NewsArticle
+    @Environment(\.openURL) var openURL
+
     var body: some SwiftUI.View {
         VStack
         {
@@ -403,7 +416,7 @@ struct TopNewsView: SwiftUI.View {
                 .cornerRadius(15)
             HStack{
                 Text(newsArticle.name).font(.subheadline).bold().foregroundColor(.secondary)
-                Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
+                Text("\(newsArticle.daysAgo) days ago").font(.subheadline).foregroundColor(.secondary)
                 Spacer()
             }
             HStack{
@@ -418,11 +431,21 @@ struct TopNewsView: SwiftUI.View {
         .contentShape(RoundedRectangle(cornerRadius: 15))
         .contextMenu {
             Button(action: {
+                if let URL = URL(string: newsArticle.url){
+                    openURL(URL)
+                }
             }) {
                 Label("Open in Safari", systemImage: "safari")
             }
             
             Button(action: {
+                
+                let originalString = "Check out this link: \(newsArticle.url) #CSCI571StockApp"
+                let urlString: String = originalString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "Hello"
+                
+                if let URL = URL(string: "https://twitter.com/intent/tweet?text=\(urlString)"){
+                    openURL(URL)
+                }
             }) {
                 Label("Share on Twitter", systemImage: "square.and.arrow.up")
             }
@@ -431,7 +454,7 @@ struct TopNewsView: SwiftUI.View {
 }
 
 struct NewsArticleView: SwiftUI.View {
-    
+    @Environment(\.openURL) var openURL
     var newsArticle: NewsArticle
     var body: some SwiftUI.View {
         HStack{
@@ -439,7 +462,7 @@ struct NewsArticleView: SwiftUI.View {
             {
                 HStack{
                     Text(newsArticle.name).font(.subheadline).bold().foregroundColor(.secondary)
-                    Text("19 days ago").font(.subheadline).foregroundColor(.secondary)
+                    Text("\(newsArticle.daysAgo) days ago").font(.subheadline).foregroundColor(.secondary)
                     Spacer()
                 }
                 HStack{
@@ -463,13 +486,23 @@ struct NewsArticleView: SwiftUI.View {
         .contentShape(RoundedRectangle(cornerRadius: 15))
         .contextMenu {
             Button(action: {
+                if let URL = URL(string: newsArticle.url){
+                    openURL(URL)
+                }
             }) {
                 Label("Open in Safari", systemImage: "safari")
             }
             
             Button(action: {
+                let originalString = "Check out this link: \(newsArticle.url) #CSCI571StockApp"
+                let urlString: String = originalString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "Hello"
+                
+                if let URL = URL(string: "https://twitter.com/intent/tweet?text=\(urlString)"){
+                    openURL(URL)
+                }
             }) {
                 Label("Share on Twitter", systemImage: "square.and.arrow.up")
+
             }
         }.cornerRadius(15)
     }

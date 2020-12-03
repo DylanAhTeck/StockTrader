@@ -15,7 +15,7 @@ class FavoritesVM: ObservableObject {
     
     @Published var favoriteStocks : [Stock]
     //@AppStorage("portfolioStocks") var portfolioStocks: [Stock]
-    private let url = "http://stocktraderbackend-env.eba-xpqeibcm.us-east-1.elasticbeanstalk.com"
+    private let url = "http://traderbackend-env.eba-mmcgukdc.us-west-1.elasticbeanstalk.com"
     static let saveKey = "FavoriteStocks"
     var timer: Timer
     
@@ -37,12 +37,14 @@ class FavoritesVM: ObservableObject {
     }
     
     func startUpdates(){
+        print("START FAVORITE UPDATES")
         let date = Date()
         self.timer = Timer(fireAt: date, interval: 15, target: self, selector: #selector(self.updateStocks), userInfo: nil, repeats: true)
         RunLoop.main.add(self.timer, forMode: .common)
     }
     
     func stopUpdates(){
+        print("STOP FAVORITE UPDATES")
         self.timer.invalidate()
     }
     
@@ -81,6 +83,17 @@ class FavoritesVM: ObservableObject {
             favoriteStocks.remove(at: idx)
             save()
         }
+    }
+    
+    func move(from source: IndexSet, to destination: Int){
+        self.favoriteStocks.move(fromOffsets: source, toOffset: destination)
+        save()
+    }
+    
+    func delete(_ idx: Int){
+        favoriteStocks.remove(at: idx)
+        save()
+        print("IN DELETE")
     }
     
     func toggleStock(stock: Stock){
