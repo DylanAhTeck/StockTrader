@@ -20,7 +20,8 @@ struct ContentView: View {
     @State var searchText: String = ""
     @ObservedObject var searchBar: SearchBar = SearchBar()
     @ObservedObject var favoritesVM: FavoritesVM = FavoritesVM()
-    
+    @ObservedObject var portfolioVM: PortfolioVM = PortfolioVM()
+
     var body: some View {
         NavigationView {
             List{
@@ -30,13 +31,22 @@ struct ContentView: View {
                 else {
                     //Date
                     Text (Date(), style: .date).font(.title).bold().foregroundColor(.gray)
-//                    SectionView(title: "Portfolio", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar)
-                    SectionView(title: "Favorites", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar, favoritesVM: favoritesVM)
+                    SectionView(title: "Portfolio", stocks: $portfolioVM.portfolioStocks, searchBar: searchBar,
+                                favoritesVM: favoritesVM, portfolioVM: portfolioVM)
+                    SectionView(title: "Favorites", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
                     ListFooter()
                 }
             }
             .navigationBarTitle("Stocks")
             .add(self.searchBar)
+            .onAppear{
+            favoritesVM.startUpdates()
+            portfolioVM.startUpdates()
+            }
+            .onDisappear{
+                favoritesVM.stopUpdates()
+                portfolioVM.stopUpdates()
+            }
         }
     }
 }
@@ -64,8 +74,11 @@ struct ListFooter: View {
 }
 
 struct StockCell: View {
-    var stock: Stock
+   // @Binding var stock: Stock
+    @ObservedObject var stock: Stock
     @ObservedObject var favoritesVM: FavoritesVM
+    @ObservedObject var portfolioVM: PortfolioVM
+    //var index: Int
     var body: some View {
         NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM))
         {
@@ -85,7 +98,6 @@ struct StockCell: View {
 struct SearchCell: View {
     var stock: Stock
     @ObservedObject var favoritesVM: FavoritesVM
-
     var body: some View {
         NavigationLink(destination: StockDetail(stock: stock, favoritesVM: favoritesVM))
         {
@@ -116,6 +128,7 @@ struct SectionView: View {
     @Binding var stocks: [Stock]
     @ObservedObject var searchBar: SearchBar
     @ObservedObject var favoritesVM: FavoritesVM
+    @ObservedObject var portfolioVM: PortfolioVM
 
     var body: some View {
         Section(header: Text(title)) {
@@ -124,21 +137,25 @@ struct SectionView: View {
             if(title == "Portfolio"){
                 VStack(alignment: .leading){
                     Text("Net Worth").font(.title)
-                    Text("19961.60").bold().font(.title)
+                    
+                    Text(String(format: "%.2f", portfolioVM.netWorth)).bold().font(.title)
+                }
+                
+                ForEach(portfolioVM.portfolioStocks,
+                        id: \.self){
+                    stock in
+                    StockCell(stock: stock, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
                 }
             }
 
-            //TODO: Fix this
-//            ForEach(stocks.filter {
-//                        searchBar.searchText.isEmpty
-//                            ||
-//                     $0.ticker.localizedStandardContains(searchBar.searchText)
-//            },
-            ForEach(stocks,
-                    id: \.self){
-                stock in
-                StockCell(stock: stock, favoritesVM: favoritesVM)
+            else {
+                ForEach(favoritesVM.favoriteStocks,
+                        id: \.self){
+                    stock in
+                    StockCell(stock: stock, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
+                }
             }
+
         }
     }
 }
