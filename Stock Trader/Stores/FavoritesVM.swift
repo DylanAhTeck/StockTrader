@@ -15,10 +15,10 @@ class FavoritesVM: ObservableObject {
     
     @Published var favoriteStocks : [Stock]
     //@AppStorage("portfolioStocks") var portfolioStocks: [Stock]
-    private let url = "http://traderbackend-env.eba-mmcgukdc.us-west-1.elasticbeanstalk.com"
+    private let url = "http://backupserver-env.eba-zgdnh5q2.us-east-1.elasticbeanstalk.com"
     static let saveKey = "FavoriteStocks"
     var timer: Timer
-    
+    @Published var isLoading = true
     init() {
         self.favoriteStocks = []
 
@@ -28,6 +28,7 @@ class FavoritesVM: ObservableObject {
             }
         }
         self.timer = Timer()
+        self.isLoading = false
     }
     
     private func save() {
@@ -62,6 +63,7 @@ class FavoritesVM: ObservableObject {
                         if let statsArray = json.to(type: Stats.self){
                             let arr  = statsArray as! [Stats]
                             let stats = arr[0]
+                            self.favoriteStocks[index].objectWillChange.send()
                             self.favoriteStocks[index].price = stats.last
                             self.favoriteStocks[index].change = stats.last - stats.prevClose
                         }

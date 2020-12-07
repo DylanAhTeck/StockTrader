@@ -14,9 +14,10 @@ import SwiftyJSON
 class PortfolioVM: ObservableObject {
     
     @Published var portfolioStocks : [Stock]
-    private let url = "http://traderbackend-env.eba-mmcgukdc.us-west-1.elasticbeanstalk.com"
+    private let url = "http://backupserver-env.eba-zgdnh5q2.us-east-1.elasticbeanstalk.com"
     static let saveKey = "PortfolioStocks"
-    static let networthKey = "NetWorth"
+    static let availableFundsKey = "AvailableFunds"
+    @Published var isLoading = true
 
     @Published var netWorth: Float
     @Published var availableFunds: Float
@@ -35,14 +36,14 @@ class PortfolioVM: ObservableObject {
             }
         }
         
-        if let data = UserDefaults.standard.data(forKey: Self.networthKey){
+        if let data = UserDefaults.standard.data(forKey: Self.availableFundsKey){
             if let decoded = try? JSONDecoder().decode(Float.self, from: data){
-                self.netWorth = decoded
+                self.availableFunds = decoded
             }
         }
         
         self.calculateNetWorth()
-
+        self.isLoading = false
         
         //let date = Date()
        // let timer = Timer(fireAt: date, interval: 15, target: self, selector: #selector(self.updateStocks), userInfo: nil, repeats: true)
@@ -76,6 +77,7 @@ class PortfolioVM: ObservableObject {
                         if let statsArray = json.to(type: Stats.self){
                             let arr  = statsArray as! [Stats]
                             let stats = arr[0]
+                            self.portfolioStocks[index].objectWillChange.send()
                             self.portfolioStocks[index].price = stats.last
                             self.portfolioStocks[index].change = stats.last - stats.prevClose
                         }
@@ -84,11 +86,15 @@ class PortfolioVM: ObservableObject {
                     }
             }
         }
+        calculateNetWorth()
     }
     
     private func save() {
         if let encoded = try? JSONEncoder().encode(self.portfolioStocks) {
             UserDefaults.standard.set(encoded, forKey: Self.saveKey)
+        }
+        if let encoded = try? JSONEncoder().encode(self.availableFunds) {
+            UserDefaults.standard.set(encoded, forKey: Self.availableFundsKey)
         }
     }
     
@@ -125,20 +131,15 @@ class PortfolioVM: ObservableObject {
     }
     
     func buy(stock: Stock, amount: Float){
-        print(self.availableFunds)
-        print(self.netWorth)
-        
-        print(stock.price)
-        print(amount)
+      
         let cost = amount * stock.price
         stock.shares += amount
         self.availableFunds = self.availableFunds - cost
         
         update(stock)
         calculateNetWorth()
-        print("Bought \(amount) shares")
-        print(self.availableFunds)
-        print(self.netWorth)
+        //print("Bought \(amount) shares")
+        
     }
     
     func sell(stock: Stock, amount: Float){
@@ -147,6 +148,27 @@ class PortfolioVM: ObservableObject {
         
         update(stock)
         calculateNetWorth()
-        print("Sold \(amount) shares")
+       // print("Sold \(amount) shares")
+    }
+    
+    func checkTransaction(stock: Stock, amount: Float, isBuy: Bool, stringInput: String)-> String{
+        
+        if(!CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: stringInput))){
+            return "Please enter a valid amount"
+        }
+        if(amount > stock.shares && !isBuy){
+            return "Not enough shares to sell"
+        }
+        if(stock.price * amount > self.availableFunds && isBuy){
+            return "Not enough money to buy"
+        }
+        if(amount <= 0 && !isBuy){
+            return "Cannot sell less than 0 share"
+        }
+        if(amount <= 0 && isBuy){
+            return "Cannot buy less than 0 share"
+        }
+        
+        return "Ok"
     }
 }

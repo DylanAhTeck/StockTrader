@@ -18,6 +18,7 @@ struct Stats: Decodable, JSONable {
     var bidPrice: Float
     var change: Float
     var prevClose: Float
+    var isSet: Bool
     
     init(parameter: JSON){
         open = parameter["open"].floatValue
@@ -29,10 +30,11 @@ struct Stats: Decodable, JSONable {
         bidPrice = parameter["bidPrice"].floatValue
         change = 0.0
         prevClose = parameter["prevClose"].floatValue
+        isSet = true
     }
     
     init(open: Float = 0.0, last: Float = 0.0, high: Float = 0.0, low: Float = 0.0, mid: Float = 0.0
-         , volume: Float = 0.0, bidPrice: Float = 0.0, change: Float = 0.0, prevClose: Float = 0.0){
+         , volume: Float = 0.0, bidPrice: Float = 0.0, change: Float = 0.0, prevClose: Float = 0.0, isSet: Bool = false){
         self.open = open
         self.last = last
         self.high = high
@@ -42,5 +44,6 @@ struct Stats: Decodable, JSONable {
         self.bidPrice = bidPrice
         self.change = change
         self.prevClose = prevClose
+        self.isSet = isSet
     }
 }

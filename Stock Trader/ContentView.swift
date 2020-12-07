@@ -34,33 +34,44 @@ struct ContentView: View {
     }
     
     var body: some View {
-        NavigationView {
-            List{
-                if(searchBar.searchText.count > 0){
-                    SearchView(searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
-                }
-                else {
-             
-                    SectionView(title: "Portfolio", stocks: $portfolioVM.portfolioStocks, searchBar: searchBar,
-                                favoritesVM: favoritesVM, portfolioVM: portfolioVM, isEditable: $isEditable)
-                    SectionView(title: "Favorites", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM, isEditable: $isEditable)
-                    ListFooter()
-                }
-            }
-            //.environment(\.editMode, isEditable ? .constant(.active) : .constant(.inactive))
-            .listStyle(PlainListStyle())
-            .navigationBarTitle("Stocks")
-            .navigationBarItems(trailing: EditButton())
-            .add(self.searchBar)
-            .onAppear{
-//            favoritesVM.startUpdates()
-//            portfolioVM.startUpdates()
-            }
-            .onDisappear{
-//                favoritesVM.stopUpdates()
-//                portfolioVM.stopUpdates()
+        
+        if(favoritesVM.isLoading || portfolioVM.isLoading)
+        {
+            ProgressView{
+                Text("Fetching Data")
             }
         }
+      
+        else {
+            NavigationView {
+                List{
+                    if(searchBar.searchText.count > 0){
+                        SearchView(searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM)
+                    }
+                    else {
+                 
+                        SectionView(title: "Portfolio", stocks: $portfolioVM.portfolioStocks, searchBar: searchBar,
+                                    favoritesVM: favoritesVM, portfolioVM: portfolioVM, isEditable: $isEditable)
+                        SectionView(title: "Favorites", stocks: $favoritesVM.favoriteStocks, searchBar: searchBar, favoritesVM: favoritesVM, portfolioVM: portfolioVM, isEditable: $isEditable)
+                        ListFooter()
+                    }
+                }
+                //.environment(\.editMode, isEditable ? .constant(.active) : .constant(.inactive))
+                .listStyle(PlainListStyle())
+                .navigationBarTitle("Stocks")
+                .navigationBarItems(trailing: EditButton())
+                .add(self.searchBar)
+                .onAppear{
+                favoritesVM.startUpdates()
+                portfolioVM.startUpdates()
+                }
+                .onDisappear{
+                    favoritesVM.stopUpdates()
+                    portfolioVM.stopUpdates()
+                }
+            }
+        }
+        
     }
 }
 

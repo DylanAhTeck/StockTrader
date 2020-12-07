@@ -14,7 +14,7 @@ class SearchBar: NSObject, ObservableObject {
     let searchController: UISearchController = UISearchController(searchResultsController: nil)
     @Published var searchText: String = ""
     @Published var stocks: [Stock] = []
-    private let url = "http://traderbackend-env.eba-mmcgukdc.us-west-1.elasticbeanstalk.com"
+    private let url = "http://backupserver-env.eba-zgdnh5q2.us-east-1.elasticbeanstalk.com"
 
     var subscription: Set<AnyCancellable> = []
     
@@ -51,7 +51,7 @@ class SearchBar: NSObject, ObservableObject {
     }
     
     private func search(ticker: String){
-        print("HERE!")
+       // print("HERE!")
         AF.request("\(self.url)/autocomplete/\(ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in

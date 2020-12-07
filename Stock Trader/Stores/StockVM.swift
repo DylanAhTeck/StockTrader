@@ -13,15 +13,19 @@ import SwiftyJSON
 class StockVM: ObservableObject {
     
     //Old url: http://test-env.eba-ufqt4wd9.us-east-1.elasticbeanstalk.com
-    private let url = "http://traderbackend-env.eba-mmcgukdc.us-west-1.elasticbeanstalk.com"
+    private let url = "http://backupserver-env.eba-zgdnh5q2.us-east-1.elasticbeanstalk.com"
     @Published var stock: Stock = Stock()
     @Published var stats: Stats = Stats()
     @Published var news: [NewsArticle] = []
     
+    @Published var statsComplete: Bool = false
+    @Published var newsComplete: Bool = false
+    @Published var stockComplete: Bool = false
+
     //@ObservedObject var favoritesVM: FavoritesVM
     
     init() {
-        print("INIT STOCK \(stock.ticker)")
+       // print("INIT STOCK \(stock.ticker)")
         //self.stock = stock
         
 //        self.favoritesVM = favoritesVM
@@ -30,7 +34,7 @@ class StockVM: ObservableObject {
 //        self.getDescription()
     }
     func update(stock: Stock){
-        print("UPDATE")
+       // print("UPDATE")
         self.stock = stock
         self.getStats()
         self.getNews()
@@ -48,7 +52,6 @@ class StockVM: ObservableObject {
                         let arr  = statsArray as! [Stats]
                         self.stats = arr[0]
                         self.stock.price = arr[0].last
-                        
                     }
                 case .failure(let error):
                     print(error)
@@ -57,8 +60,8 @@ class StockVM: ObservableObject {
     }
     
     func getStats(){
-        print("getStats")
 
+        
         AF.request("\(self.url)/details/price/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
@@ -71,6 +74,8 @@ class StockVM: ObservableObject {
                         self.stats.change = self.stats.last - self.stats.prevClose
                         self.stock.price = self.stats.last
                         self.stock.change = self.stats.change
+                        self.stats.isSet = true
+                        self.statsComplete = true
                     }
                 case .failure(let error):
                     print(error)
@@ -79,7 +84,6 @@ class StockVM: ObservableObject {
     }
     
     func getNews(){
-        print("getNews")
         AF.request("\(self.url)/details/news/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
@@ -89,6 +93,7 @@ class StockVM: ObservableObject {
                     if let newsArray = json.to(type: NewsArticle.self){
                         self.news = newsArray as! [NewsArticle]
                         self.calculateDaysAgo()
+                        self.newsComplete = true
                     }
                 case .failure(let error):
                     print(error)
@@ -107,13 +112,11 @@ class StockVM: ObservableObject {
             
             let date2 = Date()
             let diffs = Calendar.current.dateComponents([.day], from: date1, to: date2)
-            print(diffs.day!)
             newsArticle.daysAgo = diffs.day ?? 0
             
         }
     }
     func getDescription() {
-        print("getDescription")
         AF.request("\(self.url)/details/description/\(stock.ticker)", method: .get, encoding: JSONEncoding.default)
             .responseJSON {
             (response) in
@@ -125,6 +128,7 @@ class StockVM: ObservableObject {
                         if stocksArr.count == 1  {
                             self.stock.description = stocksArr[0].description
                             self.stock.name = stocksArr[0].name
+                            self.stockComplete = true
                         }
                     }
                 case .failure(let error):

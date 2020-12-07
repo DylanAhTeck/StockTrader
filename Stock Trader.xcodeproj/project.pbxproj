@@ -11,6 +11,7 @@
 		65D82E775D4A615063DD053E /* Pods_Stock_Trader_Stock_TraderUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */; };
 		C05138D95F2BB0092860E1C0 /* Pods_Stock_TraderTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426101C943215D1440DBF550 /* Pods_Stock_TraderTests.framework */; };
 		C92DE32D2579854700F542E5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92DE32C2579854600F542E5 /* WebView.swift */; };
+		C92DE3412579892D00F542E5 /* Highchart in Resources */ = {isa = PBXBuildFile; fileRef = C92DE3402579892D00F542E5 /* Highchart */; };
 		C933B5FC257272BA00E898C2 /* StockDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933B5FB257272BA00E898C2 /* StockDetail.swift */; };
 		C933B61925754F0300E898C2 /* PortfolioVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933B61825754F0300E898C2 /* PortfolioVM.swift */; };
 		C933B6212575554700E898C2 /* StockVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933B6202575554600E898C2 /* StockVM.swift */; };
@@ -56,6 +57,7 @@
 		B971FF1EA6ABE0F9B90EBB00 /* Pods_Stock_Trader_Stock_TraderUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stock_Trader_Stock_TraderUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90B19905C3B7F671E5BD926 /* Pods-Stock TraderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stock TraderTests.release.xcconfig"; path = "Target Support Files/Pods-Stock TraderTests/Pods-Stock TraderTests.release.xcconfig"; sourceTree = "<group>"; };
 		C92DE32C2579854600F542E5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		C92DE3402579892D00F542E5 /* Highchart */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Highchart; path = ../../../GithubPages/DylanAhTeck.github.io/HW9/backend/Highchart; sourceTree = "<group>"; };
 		C933B5FB257272BA00E898C2 /* StockDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetail.swift; sourceTree = "<group>"; };
 		C933B61825754F0300E898C2 /* PortfolioVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioVM.swift; sourceTree = "<group>"; };
 		C933B6202575554600E898C2 /* StockVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockVM.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				C9AF441B2571291400D561FD /* Assets.xcassets */,
 				C9AF43F325711B9300D561FD /* LaunchScreen.storyboard */,
 				C9AF43F625711B9300D561FD /* Info.plist */,
+				C92DE3402579892D00F542E5 /* Highchart */,
 				C9AF43F025711B9300D561FD /* Preview Content */,
 			);
 			path = "Stock Trader";
@@ -341,6 +344,7 @@
 				C9AF43F525711B9300D561FD /* LaunchScreen.storyboard in Resources */,
 				C9AF43F225711B9300D561FD /* Preview Assets.xcassets in Resources */,
 				C9AF441C2571291500D561FD /* Assets.xcassets in Resources */,
+				C92DE3412579892D00F542E5 /* Highchart in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -654,6 +658,7 @@
 				DEVELOPMENT_TEAM = 24BA393Y7L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Stock Trader/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -676,6 +681,7 @@
 				DEVELOPMENT_TEAM = 24BA393Y7L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Stock Trader/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

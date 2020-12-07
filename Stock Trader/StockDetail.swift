@@ -25,48 +25,61 @@ struct StockDetail: SwiftUI.View {
     }
     
     var body: some SwiftUI.View {
-        ScrollView
+        
+        if(!stockVM.newsComplete || !stockVM.statsComplete
+            || !stockVM.stockComplete)
         {
-            VStack{
-                StockOverviewView(stockVM: stockVM)
-                PortfolioView(stockVM: stockVM, portfolioVM: portfolioVM)
-                StatsView(stockVM: stockVM)
-                //About
-                AboutView(stockVM: stockVM)
-                //News
-                NewsView(stockVM: stockVM)
-            }
-            .onAppear{
+            ProgressView {
+                Text("Fetching Data")
+            }.onAppear{
                 print(stock.ticker)
                 stockVM.update(stock: stock)
-            }
-            .navigationTitle(stock.ticker)//.padding(.leading)
-            .navigationBarItems(trailing:
-            Button(action: {
-                favoritesVM.toggleStock(stock: stockVM.stock)
-                
-                    withAnimation {
-                    self.showFavoriteToast = true
-                    }
-                }) {
-                
-                stockVM.stock.isFavorite ?
-                    Image(systemName: "plus.circle.fill"):
-                    Image(systemName: "plus.circle")
-                
-            }.padding()
-            )
- 
-        }.toast(isPresented: self.$showFavoriteToast) {
-            HStack {
-                if(stockVM.stock.isFavorite) {
-                    Text("Adding \(stockVM.stock.ticker) to Favorites")
                 }
-                else{
-                    Text("Removing \(stockVM.stock.ticker) from Favorites")
+        }
+        else {
+            ScrollView
+            {
+                VStack{
+                    StockOverviewView(stockVM: stockVM)
+                   
+                    Display(ticker: stockVM.stock.ticker)
+                        .frame(width: 400, height: 410)
+                    PortfolioView(stockVM: stockVM, portfolioVM: portfolioVM)
+                    StatsView(stockVM: stockVM)
+                    //About
+                    AboutView(stockVM: stockVM)
+                    //News
+                    NewsView(stockVM: stockVM)
+                }
+                .navigationTitle(stock.ticker)//.padding(.leading)
+                .navigationBarItems(trailing:
+                Button(action: {
+                    favoritesVM.toggleStock(stock: stockVM.stock)
+                    
+                        withAnimation {
+                        self.showFavoriteToast = true
+                        }
+                    }) {
+                    
+                    stockVM.stock.isFavorite ?
+                        Image(systemName: "plus.circle.fill"):
+                        Image(systemName: "plus.circle")
+                    
+                }.padding()
+                )
+     
+            }.toast(isPresented: self.$showFavoriteToast) {
+                HStack {
+                    if(stockVM.stock.isFavorite) {
+                        Text("Adding \(stockVM.stock.ticker) to Favorites")
+                    }
+                    else{
+                        Text("Removing \(stockVM.stock.ticker) from Favorites")
+                    }
                 }
             }
         }
+    
     }
 }
 
@@ -95,7 +108,13 @@ struct StockOverviewView: SwiftUI.View {
     }
 }
 
-
+#if canImport(UIKit)
+extension SwiftUI.View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#endif
 
 struct DetailView: SwiftUI.View {
     
@@ -104,9 +123,11 @@ struct DetailView: SwiftUI.View {
     
     @State private var isBuyTransaction: Bool = false
     @State private var showToast: Bool = false
+    @State private var showErrorToast: Bool = false
     @ObservedObject var stockVM: StockVM
     @ObservedObject var portfolioVM: PortfolioVM
 
+    @State private var errorMessage: String = ""
     var body: some SwiftUI.View {
         VStack{
             HStack{
@@ -121,7 +142,7 @@ struct DetailView: SwiftUI.View {
             Text("Trade \(stockVM.stock.name) shares").bold()
             Spacer()
             HStack{
-                TextField("0", text: $amount).font(.largeTitle)
+                TextField("0", text: $amount).font(.system(size: 80)).keyboardType(.numberPad)
                 Text(Int(amount) ?? 0 > 1 ? "Shares" : "Share").font(.title)
             }.padding()
             HStack{
@@ -133,10 +154,19 @@ struct DetailView: SwiftUI.View {
             Text("$\(String(format: "%.2f", portfolioVM.availableFunds)) available to buy \(stockVM.stock.ticker)")
             HStack{
                 Button(action : {
-                    
-                    
-                    portfolioVM.buy(stock: stockVM.stock, amount: Float(amount) ?? 0)
+
                     self.isBuyTransaction = true
+                    
+                    let validMessage = portfolioVM.checkTransaction(stock: stockVM.stock, amount: Float(amount) ?? 0, isBuy: self.isBuyTransaction, stringInput: amount)
+                    
+                    if(validMessage != "Ok"){
+                        errorMessage = validMessage
+                        showErrorToast.toggle()
+                        return
+                    }
+                    self.hideKeyboard()
+
+                    portfolioVM.buy(stock: stockVM.stock, amount: Float(amount) ?? 0)
                     withAnimation {
                         self.showToast.toggle()
                     }
@@ -151,8 +181,21 @@ struct DetailView: SwiftUI.View {
                 
                 
                 Button(action: {
-                    portfolioVM.sell(stock: stockVM.stock, amount: Float(amount) ?? 0)
+                    self.hideKeyboard()
+
                     self.isBuyTransaction = false
+                    
+                    let validMessage = portfolioVM.checkTransaction(stock: stockVM.stock, amount: Float(amount) ?? 0, isBuy: self.isBuyTransaction, stringInput: amount)
+                    
+                    if(validMessage != "Ok"){
+                        errorMessage = validMessage
+                        showErrorToast.toggle()
+                        return
+                    }
+                    
+                    self.hideKeyboard()
+
+                    portfolioVM.sell(stock: stockVM.stock, amount: Float(amount) ?? 0)
                     withAnimation {
                         self.showToast.toggle()
                     }
@@ -164,7 +207,14 @@ struct DetailView: SwiftUI.View {
                     .foregroundColor(Color.white)
                     .cornerRadius(40)
                     .padding(.trailing)
-            }.padding()
+            }
+            .padding()
+            
+        }
+        .toast(isPresented: self.$showErrorToast) {
+            HStack {
+                    Text(errorMessage)
+                }
         }
         .successToast(isPresented: self.$showToast, showingDetail: self.$showingDetail) {
             VStack {
@@ -295,8 +345,14 @@ struct PortfolioView: SwiftUI.View {
                 {
                     VStack(alignment: .leading){
                         
-                        Text("Shares Owned: \(String(format: "%.2f", stockVM.stock.shares))").padding(1)
-                        Text("Market Value: $\(String(format: "%.2f", stockVM.stock.shares * stockVM.stock.price))").padding(1)
+                        if(stockVM.stock.shares == 0){
+                            Text("You have 0 shares of \(stockVM.stock.ticker).")
+                            Text("Start trading!")
+                        }
+                        else {
+                            Text("Shares Owned: \(String(format: "%.2f", stockVM.stock.shares))").padding(1)
+                            Text("Market Value: $\(String(format: "%.2f", stockVM.stock.shares * stockVM.stock.price))").padding(1)
+                        }
                     }
                     Spacer()
                     Button(action : {
@@ -314,7 +370,7 @@ struct PortfolioView: SwiftUI.View {
                                    portfolioVM: portfolioVM)
                     }
                 }
-            }.padding(.leading)
+            }.padding(.leading).padding(.bottom)
     }
 }
 
